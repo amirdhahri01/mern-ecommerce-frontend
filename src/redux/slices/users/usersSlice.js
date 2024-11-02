@@ -24,6 +24,27 @@ export const loginUserAction = createAsyncThunk(
         email,
         password,
       });
+      //Save the uer into localstorage
+      localStorage.setItem("userInfo", JSON.stringify(data));
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+//Register action
+export const registerUserAction = createAsyncThunk(
+  "users/register",
+  async (
+    { fullname, email, password },
+    { rejectWithValue, getState, dispatch }
+  ) => {
+    try {
+      const { data } = await axios.post(`${baseURL}/users/register`, {
+        fullname,
+        email,
+        password,
+      });
       return data;
     } catch (error) {
       return rejectWithValue(error?.response?.data);
@@ -47,6 +68,18 @@ const usersSlice = createSlice({
     builder.addCase(loginUserAction.rejected, (state, action) => {
       state.userAuth.error = action.payload;
       state.userAuth.loading = false;
+    });
+    //register
+    builder.addCase(registerUserAction.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(registerUserAction.fulfilled, (state, action) => {
+      state.user = action.payload;
+      state.loading = false;
+    });
+    builder.addCase(registerUserAction.rejected, (state, action) => {
+      state.error = action.payload;
+      state.loading = false;
     });
   },
 });
