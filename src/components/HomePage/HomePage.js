@@ -24,28 +24,28 @@ const perks = [
   {
     name: "Free returns",
     imageUrl:
-      "https://tailwindui.com/img/ecommerce/icons/icon-returns-light.svg",
+      "https://tailwindui.com/plus/img/ecommerce/icons/icon-returns-light.svg",
     description:
       "Not what you expected? Place it back in the parcel and attach the pre-paid postage stamp.",
   },
   {
     name: "Same day delivery",
     imageUrl:
-      "https://tailwindui.com/img/ecommerce/icons/icon-calendar-light.svg",
+      "https://tailwindui.com/plus/img/ecommerce/icons/icon-calendar-light.svg",
     description:
       "We offer a delivery service that has never been done before. Checkout today and receive your products within hours.",
   },
   {
     name: "All year discount",
     imageUrl:
-      "https://tailwindui.com/img/ecommerce/icons/icon-gift-card-light.svg",
+      "https://tailwindui.com/plus/img/ecommerce/icons/icon-gift-card-light.svg",
     description:
       'Looking for a deal? You can use the code "ALLYEAR" at checkout and get money off all year round.',
   },
   {
     name: "For the planet",
     imageUrl:
-      "https://tailwindui.com/img/ecommerce/icons/icon-planet-light.svg",
+      "https://tailwindui.com/plus/img/ecommerce/icons/icon-planet-light.svg",
     description:
       "We’ve pledged 1% of sales to the preservation and restoration of the natural environment.",
   },
@@ -105,7 +105,7 @@ export default function Example() {
             </div>
             <div className="h-48 w-full sm:h-64 lg:absolute lg:top-0 lg:right-0 lg:h-full lg:w-1/2">
               <img
-                src="https://tailwindui.com/img/ecommerce-images/home-page-02-hero-half-width.jpg"
+                src="https://tailwindui.com/plus/img/ecommerce-images/home-page-02-hero-half-width.jpg"
                 alt=""
                 className="h-full w-full object-cover object-center"
               />
