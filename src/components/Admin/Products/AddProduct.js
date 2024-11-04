@@ -6,12 +6,15 @@ import makeAnimated from "react-select/animated";
 import ErrorMsg from "../../ErrorMsg/ErrorMsg";
 import LoadingComponent from "../../LoadingComp/LoadingComponent";
 import SuccessMsg from "../../SuccessMsg/SuccessMsg";
-import { createProductAction } from "../../../redux/slices/product/productSlice";
+import { createProductAction } from "../../../redux/slices/products/productsSlice";
+import { fetchCategoriesAction } from "../../../redux/slices/categories/categoiesSlice";
 
 //animated components for react-select
 const animatedComponents = makeAnimated();
 
 export default function AddProduct() {
+  const dispatch = useDispatch();
+  //Sizes
   const sizes = ["S", "M", "L", "XL", "XXL"];
   const [sizeOption, setSizeOption] = useState([]);
   const handleSizeChange = (sizes) => {
@@ -21,14 +24,17 @@ export default function AddProduct() {
   const sizeOptionsCoverted = sizes?.map((size) => {
     return { value: size, label: size };
   });
-  const dispatch = useDispatch();
-  let categories,
-    colorOptionsCoverted,
-    handleColorChangeOption,
-    brands,
-    loading,
-    error,
-    isAdded;
+  //Categories
+  useEffect(() => {
+    dispatch(fetchCategoriesAction());
+  }, [dispatch]);
+  //Select data from store
+  const { categories, loading, error } = useSelector(
+    (state) => state?.categories?.categories
+  );
+  console.log(categories, loading, error);
+
+  let colorOptionsCoverted, handleColorChangeOption, brands, isAdded;
 
   //---form data---
   const [formData, setFormData] = useState({
@@ -104,7 +110,7 @@ export default function AddProduct() {
                   Select Size
                 </label>
                 <Select
-                  // components={animatedComponents}
+                  components={animatedComponents}
                   isMulti
                   name="sizes"
                   options={sizeOptionsCoverted}
@@ -129,10 +135,6 @@ export default function AddProduct() {
                   className="mt-1  block w-full rounded-md border-gray-300 py-2  pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm border"
                   defaultValue="Canada"
                 >
-                  {/* <option>-- Select Category --</option>
-                  <option value="Clothings">Clothings</option>
-                  <option value="Shoes">Shoes</option>
-                  <option value="Accessories">Accessories</option> */}
                   <option>-- Select Category --</option>
                   {categories?.map((category) => (
                     <option key={category?._id} value={category?.name}>
