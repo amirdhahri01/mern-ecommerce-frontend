@@ -22,16 +22,26 @@ export const createProductAction = createAsyncThunk(
         payload;
       //Make request
       //Token - Authenticated
+      const token = getState()?.users?.userAuth?.userInfo?.token;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
       //Images
-      const { data } = await axios.post(`${baseURL}/products`, {
-        name,
-        description,
-        category,
-        sizes,
-        brand,
-        colors,
-        price,
-      });
+      const { data } = await axios.post(
+        `${baseURL}/products`,
+        {
+          name,
+          description,
+          category,
+          sizes,
+          brand,
+          colors,
+          price,
+        },
+        config
+      );
       return data;
     } catch (error) {
       rejectWithValue(error?.response?.data);
@@ -61,6 +71,6 @@ const productSlice = createSlice({
   },
 });
 
-const productReducer = productSlice.reducer();
+const productReducer = productSlice.reducer;
 
 export default productReducer;
