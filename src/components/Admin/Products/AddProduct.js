@@ -10,7 +10,6 @@ import { createProductAction } from "../../../redux/slices/products/productsSlic
 import { fetchCategoriesAction } from "../../../redux/slices/categories/categoiesSlice";
 import { fetchBrandsAction } from "../../../redux/slices/brands/brandsSlice";
 import { fetchColorsAction } from "../../../redux/slices/colors/colorsSlice";
-
 //animated components for react-select
 const animatedComponents = makeAnimated();
 
