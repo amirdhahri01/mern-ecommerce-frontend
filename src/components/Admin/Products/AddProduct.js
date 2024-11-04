@@ -9,12 +9,23 @@ import SuccessMsg from "../../SuccessMsg/SuccessMsg";
 import { createProductAction } from "../../../redux/slices/products/productsSlice";
 import { fetchCategoriesAction } from "../../../redux/slices/categories/categoiesSlice";
 import { fetchBrandsAction } from "../../../redux/slices/brands/brandsSlice";
+import { fetchColorsAction } from "../../../redux/slices/colors/colorsSlice";
 
 //animated components for react-select
 const animatedComponents = makeAnimated();
 
 export default function AddProduct() {
   const dispatch = useDispatch();
+
+  //Files
+  const [files, setFiles] = useState([]);
+  const [fileErrors, setFileErrors] = useState([]);
+  //file handle change
+  const fileHandleChange = (e) => {
+    const newFiles = Array.from(e.target.files);
+    setFiles(newFiles);
+  };
+
   //Sizes
   const sizes = ["S", "M", "L", "XL", "XXL"];
   const [sizeOption, setSizeOption] = useState([]);
@@ -25,6 +36,7 @@ export default function AddProduct() {
   const sizeOptionsCoverted = sizes?.map((size) => {
     return { value: size, label: size };
   });
+
   //Categories
   useEffect(() => {
     dispatch(fetchCategoriesAction());
@@ -33,24 +45,37 @@ export default function AddProduct() {
   const { categories, loading, error } = useSelector(
     (state) => state?.categories?.categories
   );
-  //Categories
+
+  //Brands
   useEffect(() => {
     dispatch(fetchBrandsAction());
   }, [dispatch]);
   //Select data from store
   const { brands } = useSelector((state) => state?.brands?.brands);
 
-  let colorOptionsCoverted, handleColorChangeOption, isAdded;
+  //Colors
+  const [colorsOption, setColorsOption] = useState([]);
 
+  useEffect(() => {
+    dispatch(fetchColorsAction());
+  }, [dispatch]);
+  //Select data from store
+  const { colors } = useSelector((state) => state?.colors?.colors);
+  //Converted colors
+  const colorOptionsCoverted = colors?.map((color) => {
+    return {
+      value: color?.name,
+      label: color?.name,
+    };
+  });
+  const handleColorChangeOption = (colors) => {
+    setColorsOption(colors);
+  };
+  let isAdded;
   //---form data---
   const [formData, setFormData] = useState({
     name: "",
     description: "",
-    category: "",
-    sizes: "",
-    brand: "",
-    colors: "",
-    images: "",
     price: "",
     totalQty: "",
   });
@@ -63,16 +88,18 @@ export default function AddProduct() {
   //onSubmit
   const handleOnSubmit = (e) => {
     e.preventDefault();
-    dispatch(createProductAction(formData));
+    dispatch(
+      createProductAction({
+        ...formData,
+        files,
+        colors: colorsOption?.map((color) => color?.value),
+        sizes: sizeOption?.map((size) => size?.value),
+      })
+    );
     //reset form data
     setFormData({
       name: "",
       description: "",
-      category: "",
-      sizes: "",
-      brand: "",
-      colors: "",
-      images: "",
       price: "",
       totalQty: "",
     });
@@ -222,9 +249,10 @@ export default function AddProduct() {
                         >
                           <span>Upload files</span>
                           <input
+                            multiple
                             name="images"
                             value={formData.images}
-                            onChange={handleOnChange}
+                            onChange={fileHandleChange}
                             type="file"
                           />
                         </label>

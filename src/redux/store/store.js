@@ -3,6 +3,7 @@ import usersReducer from "../slices/users/usersSlice";
 import productReducer from "../slices/products/productsSlice";
 import categoryReducer from "../slices/categories/categoiesSlice";
 import brandReducer from "../slices/brands/brandsSlice";
+import colorReducer from "../slices/colors/colorsSlice";
 
 //Store
 const store = configureStore({
@@ -11,6 +12,7 @@ const store = configureStore({
     products: productReducer,
     categories: categoryReducer,
     brands: brandReducer,
+    colors: colorReducer,
   },
 });
 
