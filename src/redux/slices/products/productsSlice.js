@@ -85,7 +85,6 @@ const productSlice = createSlice({
       state.isAdded = false;
       state.product = null;
       state.error = action.payload;
-      console.log(action.payload);
     });
   },
 });

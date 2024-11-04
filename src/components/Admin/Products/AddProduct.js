@@ -42,9 +42,7 @@ export default function AddProduct() {
     dispatch(fetchCategoriesAction());
   }, [dispatch]);
   //Select data from store
-  const { categories, loading, error } = useSelector(
-    (state) => state?.categories?.categories
-  );
+  const { categories } = useSelector((state) => state?.categories?.categories);
 
   //Brands
   useEffect(() => {
@@ -71,7 +69,6 @@ export default function AddProduct() {
   const handleColorChangeOption = (colors) => {
     setColorsOption(colors);
   };
-  let isAdded;
   //---form data---
   const [formData, setFormData] = useState({
     name: "",
@@ -84,7 +81,10 @@ export default function AddProduct() {
   const handleOnChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-
+  //Get product from store
+  const { product, isAdded, loading, error } = useSelector(
+    (state) => state?.products
+  );
   //onSubmit
   const handleOnSubmit = (e) => {
     e.preventDefault();
@@ -219,10 +219,7 @@ export default function AddProduct() {
 
               {/* upload images */}
               <div className="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:border-t sm:border-gray-200 sm:pt-5">
-                <label
-                  htmlFor="cover-photo"
-                  className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"
-                >
+                <label className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
                   Upload Images
                 </label>
                 <div className="mt-1 sm:col-span-2 sm:mt-0">
@@ -249,16 +246,18 @@ export default function AddProduct() {
                         >
                           <span>Upload files</span>
                           <input
+                            hidden
                             multiple
                             name="images"
                             value={formData.images}
                             onChange={fileHandleChange}
                             type="file"
+                            id="file-upload"
                           />
                         </label>
                       </div>
                       <p className="text-xs text-gray-500">
-                        PNG, JPG, GIF up to 10MB
+                        PNG, JPG, GIF up to 1MB
                       </p>
                     </div>
                   </div>
@@ -306,6 +305,7 @@ export default function AddProduct() {
                 </label>
                 <div className="mt-1">
                   <textarea
+                    id="comment"
                     rows={4}
                     name="description"
                     value={formData.description}
