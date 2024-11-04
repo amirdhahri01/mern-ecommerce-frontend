@@ -46,28 +46,18 @@ export const createProductAction = createAsyncThunk(
       formData.append("brand", brand);
       formData.append("price", price);
       formData.append("totalQty", totalQty);
-      sizes.map((size) => {
+      sizes.forEach((size) => {
         formData.append("sizes", size);
       });
-      colors.map((color) => {
+      colors.forEach((color) => {
         formData.append("colors", color);
       });
-      files.map((file) => {
-        console.log(file);
+      files.forEach((file) => {
         formData.append("files", file);
       });
       const { data } = await axios.post(
         `${baseURL}/products`,
-        {
-          name,
-          description,
-          category,
-          sizes,
-          brand,
-          colors,
-          price,
-          totalQty,
-        },
+        formData,
         config
       );
       return data;
