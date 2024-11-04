@@ -44,7 +44,7 @@ export const createProductAction = createAsyncThunk(
       );
       return data;
     } catch (error) {
-      rejectWithValue(error?.response?.data);
+      return rejectWithValue(error?.response?.data);
     }
   }
 );

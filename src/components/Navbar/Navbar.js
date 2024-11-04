@@ -21,9 +21,9 @@ export default function Navbar() {
   const user = JSON.parse(localStorage.getItem("userInfo"));
   const isLoggedIn = user?.token ? true : false;
   //redirect
-  if(!isLoggedIn){
+  /*if(!isLoggedIn){
     window.location.href = "/login";
-  }
+  }*/
   return (
     <div className="bg-white">
       {/* Mobile menu */}
