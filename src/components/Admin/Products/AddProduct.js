@@ -22,9 +22,19 @@ export default function AddProduct() {
   //file handle change
   const fileHandleChange = (e) => {
     const newFiles = Array.from(e.target.files);
+    //Validation
+    const newErrs = [];
+    newFiles.forEach((file) => {
+      if (file?.size < 1000000) {
+        newErrs.push(`${file.name} is too large`);
+      }
+      if (!file?.type?.startsWith("image/")) {
+        newErrs.push(`${file?.name} is not an image`);
+      }
+    });
+    setFileErrors(newErrs);
     setFiles(newFiles);
   };
-
   //Sizes
   const sizes = ["S", "M", "L", "XL", "XXL"];
   const [sizeOption, setSizeOption] = useState([]);
@@ -107,6 +117,9 @@ export default function AddProduct() {
   return (
     <>
       {error && <ErrorMsg message={error?.message} />}
+      {fileErrors.length > 0 && (
+        <ErrorMsg message="File too large or upload an image" />
+      )}
       {isAdded && <SuccessMsg message="Product Added Successfully" />}
       <div className="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
@@ -318,6 +331,7 @@ export default function AddProduct() {
                   <LoadingComponent />
                 ) : (
                   <button
+                    disabled={fileErrors.length > 0}
                     type="submit"
                     className="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                   >

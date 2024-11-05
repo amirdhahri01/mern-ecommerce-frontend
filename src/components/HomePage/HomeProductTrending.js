@@ -1,7 +1,16 @@
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { fetchProductsAction } from "../../redux/slices/products/productsSlice";
 
 const HomeProductTrending = () => {
-  const trendingProducts = [];
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchProductsAction());
+  }, []);
+  const trendingProducts = useSelector(
+    (state) => state?.products?.products?.products
+  );
   return (
     <>
       <section aria-labelledby="trending-heading">
@@ -9,12 +18,14 @@ const HomeProductTrending = () => {
           <div className="md:flex md:items-center md:justify-between">
             <h2
               id="favorites-heading"
-              className="text-2xl font-bold tracking-tight text-gray-900">
+              className="text-2xl font-bold tracking-tight text-gray-900"
+            >
               Trending Products
             </h2>
             <a
               href="#"
-              className="hidden text-sm font-medium text-indigo-600 hover:text-indigo-500 md:block">
+              className="hidden text-sm font-medium text-indigo-600 hover:text-indigo-500 md:block"
+            >
               Shop the collection
               <span aria-hidden="true"> &rarr;</span>
             </a>
@@ -23,13 +34,14 @@ const HomeProductTrending = () => {
           <div className="mt-6 grid grid-cols-2 gap-x-4 gap-y-10 sm:gap-x-6 md:grid-cols-4 md:gap-y-0 lg:gap-x-8">
             {trendingProducts?.map((product) => (
               <Link
-                to={`/products/${product.id}`}
-                key={product.id}
-                className="group relative">
+                to={`/products/${product._id}`}
+                key={product._id}
+                className="group relative"
+              >
                 <div className="h-56 w-full overflow-hidden rounded-md group-hover:opacity-75 lg:h-72 xl:h-80">
                   <img
-                    src={product.imageSrc}
-                    alt={product.imageAlt}
+                    src={product?.images[0]}
+                    alt={product.name}
                     className="h-full w-full object-cover object-center"
                   />
                 </div>
@@ -39,10 +51,13 @@ const HomeProductTrending = () => {
                     {product.name}
                   </a>
                 </h3>
-                <p className="mt-1 text-sm text-gray-500">{product.color}</p>
+                <p className="mt-1 text-sm text-gray-500">
+                  {product.colors.map((color) => color)}
+                </p>
                 <p className="mt-1 text-sm font-medium text-gray-900">
                   {product.price}
                 </p>
+                <p>{product.description}</p>
               </Link>
             ))}
           </div>
@@ -50,7 +65,8 @@ const HomeProductTrending = () => {
           <div className="mt-8 text-sm md:hidden">
             <a
               href="#"
-              className="font-medium text-indigo-600 hover:text-indigo-500">
+              className="font-medium text-indigo-600 hover:text-indigo-500"
+            >
               Shop the collection
               <span aria-hidden="true"> &rarr;</span>
             </a>
