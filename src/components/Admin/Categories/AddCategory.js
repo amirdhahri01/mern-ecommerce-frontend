@@ -3,11 +3,32 @@ import { Link } from "react-router-dom";
 import ErrorComponent from "../../ErrorMsg/ErrorMsg";
 import SuccessMsg from "../../SuccessMsg/SuccessMsg";
 import LoadingComponent from "../../LoadingComp/LoadingComponent";
-
+import { createCategoryAction } from "../../../redux/slices/categories/categoiesSlice";
+import { useDispatch } from "react-redux";
 export default function CategoryToAdd() {
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     name: "",
   });
+  //Files
+  const [files, setFiles] = useState([]);
+  const [fileErrors, setFileErrors] = useState([]);
+  //file handle change
+  const fileHandleChange = (e) => {
+    const newFiles = Array.from(e.target.files);
+    //Validation
+    const newErrs = [];
+    newFiles.forEach((file) => {
+      if (file?.size < 1000000) {
+        newErrs.push(`${file.name} is too large`);
+      }
+      if (!file?.type?.startsWith("image/")) {
+        newErrs.push(`${file?.name} is not an image`);
+      }
+    });
+    setFileErrors(newErrs);
+    setFiles(newFiles);
+  };
   //---onChange---
   const handleOnChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -16,6 +37,8 @@ export default function CategoryToAdd() {
   //onSubmit
   const handleOnSubmit = (e) => {
     e.preventDefault();
+    //dispatch
+    dispatch(createCategoryAction({ name, image: file }));
   };
   return (
     <>
@@ -29,7 +52,8 @@ export default function CategoryToAdd() {
             fill="none"
             viewBox="0 0 24 24"
             stroke-width="1.5"
-            stroke="currentColor">
+            stroke="currentColor"
+          >
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -47,7 +71,8 @@ export default function CategoryToAdd() {
               <div>
                 <label
                   htmlFor="email"
-                  className="block text-sm font-medium text-gray-700">
+                  className="block text-sm font-medium text-gray-700"
+                >
                   Name
                 </label>
                 <div className="mt-1">
@@ -65,7 +90,8 @@ export default function CategoryToAdd() {
                 ) : (
                   <button
                     type="submit"
-                    className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  >
                     Add Category
                   </button>
                 )}
@@ -86,7 +112,8 @@ export default function CategoryToAdd() {
                 <div>
                   <Link
                     to="/admin/add-brand"
-                    className="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50">
+                    className="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50"
+                  >
                     Add Brand
                   </Link>
                 </div>
@@ -95,7 +122,8 @@ export default function CategoryToAdd() {
                   <div>
                     <Link
                       to="/admin/add-color"
-                      className="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50">
+                      className="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50"
+                    >
                       Add Color
                     </Link>
                   </div>
@@ -105,7 +133,8 @@ export default function CategoryToAdd() {
                   <div>
                     <Link
                       to="/admin/add-category"
-                      className="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50">
+                      className="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50"
+                    >
                       Add Category
                     </Link>
                   </div>
