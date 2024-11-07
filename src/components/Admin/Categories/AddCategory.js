@@ -17,7 +17,8 @@ export default function CategoryToAdd() {
   const fileHandleChange = (e) => {
     const newFile = e.target.files[0];
     //Validation
-    if (newFile?.size < 1000000) {
+    console.log(newFile?.size);
+    if (newFile?.size > 1000000) {
       setFileError(`${newFile.name} is too large`);
     }
     if (!newFile?.type?.startsWith("image/")) {

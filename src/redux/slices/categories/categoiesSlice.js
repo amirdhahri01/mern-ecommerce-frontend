@@ -1,5 +1,9 @@
 import axios from "axios";
 import baseURL from "../../../utils/baseURL";
+import {
+  resetErrAction,
+  resetSuccessAction,
+} from "../globalActions/globalActions";
 
 const { createAsyncThunk, createSlice } = require("@reduxjs/toolkit");
 
@@ -25,10 +29,11 @@ export const createCategoryAction = createAsyncThunk(
       formData.append("file", image);
       //Token - Authenticated
       const token = getState()?.users?.userAuth?.userInfo?.token;
+      console.log(token, image, name);
       const config = {
         headers: {
           Authorization: `Bearer ${token}`,
-         "Content-Type": "multipart/form-data",
+          "Content-Type": "multipart/form-data",
         },
       };
       //Images
@@ -83,11 +88,17 @@ const categorySlice = createSlice({
       state.isAdded = true;
       state.categories = action.payload;
     });
+    builder.addCase(resetErrAction.pending, (state, action) => {
+      state.isAdded = false;
+    });
     builder.addCase(fetchCategoriesAction.rejected, (state, action) => {
       state.loading = false;
       state.isAdded = false;
       state.categories = null;
       state.error = action.payload;
+    });
+    builder.addCase(resetSuccessAction.pending, (state, action) => {
+      state.error = false;
     });
   },
 });
