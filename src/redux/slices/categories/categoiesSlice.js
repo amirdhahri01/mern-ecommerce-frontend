@@ -22,21 +22,19 @@ export const createCategoryAction = createAsyncThunk(
       //FormData
       const formData = new FormData();
       formData.append("name", name);
-      formData.append("image", image);
+      formData.append("file", image);
       //Token - Authenticated
       const token = getState()?.users?.userAuth?.userInfo?.token;
       const config = {
         headers: {
           Authorization: `Bearer ${token}`,
-          "Content-Type": ""
+         "Content-Type": "multipart/form-data",
         },
       };
       //Images
       const { data } = await axios.post(
         `${baseURL}/categories`,
-        {
-          name,
-        },
+        formData,
         config
       );
       return data;

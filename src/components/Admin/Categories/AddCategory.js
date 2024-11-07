@@ -4,43 +4,46 @@ import ErrorComponent from "../../ErrorMsg/ErrorMsg";
 import SuccessMsg from "../../SuccessMsg/SuccessMsg";
 import LoadingComponent from "../../LoadingComp/LoadingComponent";
 import { createCategoryAction } from "../../../redux/slices/categories/categoiesSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 export default function CategoryToAdd() {
   const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     name: "",
   });
   //Files
-  const [file, setFile] = useState([]);
-  const [fileErrors, setFileErrors] = useState([]);
-  //file handle change
+  const [file, setFile] = useState(null);
+  const [fileError, setFileError] = useState(null);
+  //File handle change
   const fileHandleChange = (e) => {
-    const newFile = e.target.file;
+    const newFile = e.target.files[0];
     //Validation
-    const newErrs = [];
     if (newFile?.size < 1000000) {
-      newErrs.push(`${newFile.name} is too large`);
+      setFileError(`${newFile.name} is too large`);
     }
     if (!newFile?.type?.startsWith("image/")) {
-      newErrs.push(`${newFile?.name} is not an image`);
+      setFileError(`${newFile?.name} is not an image`);
     }
-    setFileErrors(newErrs);
     setFile(newFile);
   };
   //---onChange---
   const handleOnChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-  let { error, isAdded, loading } = {};
+  let { error, isAdded, loading } = useSelector((state) => state?.categories);
   //onSubmit
   const handleOnSubmit = (e) => {
     e.preventDefault();
     //dispatch
     dispatch(createCategoryAction({ name: formData?.name, image: file }));
+    //reset
+    setFormData({ name: "" });
+    setFile(null);
+    setFileError(null);
   };
   return (
     <>
       {error && <ErrorComponent message={error?.message} />}
+      {fileError && <ErrorComponent message={fileError} />}
       {isAdded && <SuccessMsg message="Category added successfully" />}
       <div className="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
@@ -49,12 +52,12 @@ export default function CategoryToAdd() {
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
-            stroke-width="1.5"
+            strokeWidth="1.5"
             stroke="currentColor"
           >
             <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeLinecap="round"
+              strokeLinejoin="round"
               d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125"
             />
           </svg>
@@ -68,7 +71,7 @@ export default function CategoryToAdd() {
             <form className="space-y-6" onSubmit={handleOnSubmit}>
               <div>
                 <label
-                  htmlFor="email"
+                  htmlFor="name"
                   className="block text-sm font-medium text-gray-700"
                 >
                   Name
@@ -78,6 +81,7 @@ export default function CategoryToAdd() {
                     onChange={handleOnChange}
                     value={formData.name}
                     name="name"
+                    id="name"
                     className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                   />
                 </div>
