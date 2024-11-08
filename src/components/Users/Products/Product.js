@@ -1,3 +1,4 @@
+import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
 import { RadioGroup } from "@headlessui/react";
 import {
@@ -8,6 +9,7 @@ import { StarIcon } from "@heroicons/react/20/solid";
 import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProductAction } from "../../../redux/slices/products/productsSlice";
+import { addOrderToCart } from "../../../redux/slices/Carts/cartsSlice";
 const product = {
   name: "Basic Tee",
   price: "$35",
@@ -88,9 +90,6 @@ export default function Product() {
   const dispatch = useDispatch();
   const [selectedSize, setSelectedSize] = useState("");
   const [selectedColor, setSelectedColor] = useState("");
-
-  //Add to cart handler
-  const addToCartHandler = (item) => {};
   let productDetails = {};
   let productColor;
   let productSize;
@@ -105,6 +104,42 @@ export default function Product() {
     error,
     product: { product },
   } = useSelector((state) => state?.products);
+  //Add to cart handler
+  const addToCartHandler = (item) => {
+    //check if color or size seected
+    if (selectedColor === "") {
+      return Swal.fire({
+        icon: "error",
+        title: "Oops...!",
+        text: "Please select product color",
+      });
+    }
+    if (selectedSize === "") {
+      return Swal.fire({
+        icon: "error",
+        title: "Oops...!",
+        text: "Please select product size",
+      });
+    }
+    dispatch(
+      addOrderToCart({
+        cartItem: {
+          _id: product?._id,
+          qty: product?.qty,
+          name: product?.name,
+          price: product?.price,
+          description: product?.description,
+          color: selectedColor,
+          size: selectedSize,
+        },
+      })
+    );
+    Swal.fire({
+      icon: "success",
+      title: "Good Job",
+      text: "Product added to cart successfully",
+    });
+  };
   return (
     <div className="bg-white">
       <main className="mx-auto mt-8 max-w-2xl px-4 pb-16 sm:px-6 sm:pb-24 lg:max-w-7xl lg:px-8">
