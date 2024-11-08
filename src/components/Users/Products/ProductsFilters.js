@@ -101,7 +101,7 @@ export default function ProductsFilters() {
   const { brands } = useSelector((state) => state?.brands.brands);
   const { colors } = useSelector((state) => state?.colors.colors);
   const {
-    products: { products },
+    products : { products },
     loading,
     error,
   } = useSelector((state) => state?.products);

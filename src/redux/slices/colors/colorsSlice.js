@@ -1,5 +1,6 @@
 import axios from "axios";
 import baseURL from "../../../utils/baseURL";
+import { resetErrAction, resetSuccessAction } from "../globalActions/globalActions";
 
 const { createAsyncThunk, createSlice } = require("@reduxjs/toolkit");
 
@@ -62,7 +63,7 @@ const colorSlice = createSlice({
       state.loading = true;
     });
     builder.addCase(createColorAction.fulfilled, (state, action) => {
-      state.loading = true;
+      state.loading = false;
       state.isAdded = true;
       state.color = action.payload;
     });
@@ -77,7 +78,7 @@ const colorSlice = createSlice({
       state.loading = true;
     });
     builder.addCase(fetchColorsAction.fulfilled, (state, action) => {
-      state.loading = true;
+      state.loading = false;
       state.isAdded = true;
       state.colors = action.payload;
     });
@@ -87,6 +88,13 @@ const colorSlice = createSlice({
       state.colors = null;
       state.error = action.payload;
     });
+    //reset
+    builder.addCase(resetSuccessAction.pending , (state , action)=>{
+      state.loading = false;
+    })
+    builder.addCase(resetErrAction.pending , (state , action)=>{
+      state.error = null;
+    })
   },
 });
 
