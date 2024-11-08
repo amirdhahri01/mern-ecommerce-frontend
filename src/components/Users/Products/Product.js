@@ -9,7 +9,10 @@ import { StarIcon } from "@heroicons/react/20/solid";
 import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProductAction } from "../../../redux/slices/products/productsSlice";
-import { addOrderToCart } from "../../../redux/slices/Carts/cartsSlice";
+import {
+  addOrderToCart,
+  getCartItemsFromLocalStorageAction,
+} from "../../../redux/slices/Carts/cartsSlice";
 const product = {
   name: "Basic Tee",
   price: "$35",
@@ -90,10 +93,6 @@ export default function Product() {
   const dispatch = useDispatch();
   const [selectedSize, setSelectedSize] = useState("");
   const [selectedColor, setSelectedColor] = useState("");
-  let productDetails = {};
-  let productColor;
-  let productSize;
-  let cartItems = [];
   //Get id from params
   const { id } = useParams();
   useEffect(() => {
@@ -104,9 +103,22 @@ export default function Product() {
     error,
     product: { product },
   } = useSelector((state) => state?.products);
+  //Get data from store
+  const { cartItems } = useSelector((state) => state?.carts);
+  const productExists = cartItems?.find(
+    (item) => item?._id.toString() === id.toString()
+  );
   //Add to cart handler
   const addToCartHandler = (item) => {
-    //check if color or size seected
+    //check if product exists
+    if (productExists) {
+      return Swal.fire({
+        icon: "error",
+        title: "Oops...!",
+        text: "This product is already cart",
+      });
+    }
+    //check if color is selected
     if (selectedColor === "") {
       return Swal.fire({
         icon: "error",
@@ -114,6 +126,7 @@ export default function Product() {
         text: "Please select product color",
       });
     }
+    //check if size is selected
     if (selectedSize === "") {
       return Swal.fire({
         icon: "error",
@@ -140,6 +153,11 @@ export default function Product() {
       text: "Product added to cart successfully",
     });
   };
+  //Get cart items
+  useEffect(() => {
+    dispatch(getCartItemsFromLocalStorageAction());
+  }, [dispatch]);
+  let productDetails;
   return (
     <div className="bg-white">
       <main className="mx-auto mt-8 max-w-2xl px-4 pb-16 sm:px-6 sm:pb-24 lg:max-w-7xl lg:px-8">

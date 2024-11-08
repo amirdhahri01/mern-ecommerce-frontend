@@ -27,12 +27,22 @@ export const addOrderToCart = createAsyncThunk(
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
   }
 );
+//Add product to cat
+export const getCartItemsFromLocalStorageAction = createAsyncThunk(
+  "cart/get-order-items",
+  (payload, { rejectWithValue, dispatch }) => {
+    const cartItems = localStorage.getItem("cartItems")
+      ? JSON.parse(localStorage.getItem("cartItems"))
+      : [];
+    return cartItems;
+  }
+);
 
 const cartSlice = createSlice({
-  name: "brands",
+  name: "carts",
   initialState,
   extraReducers: (builder) => {
-    //Create brand
+    //Add order to cart
     builder.addCase(addOrderToCart.pending, (state) => {
       state.loading = true;
     });
@@ -47,6 +57,27 @@ const cartSlice = createSlice({
       state.cartItems = [];
       state.error = action.payload;
     });
+    //Fetch cart items
+    builder.addCase(getCartItemsFromLocalStorageAction.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(
+      getCartItemsFromLocalStorageAction.fulfilled,
+      (state, action) => {
+        state.loading = false;
+        state.isAdded = true;
+        state.cartItems = action.payload;
+      }
+    );
+    builder.addCase(
+      getCartItemsFromLocalStorageAction.rejected,
+      (state, action) => {
+        state.loading = false;
+        state.isAdded = false;
+        state.cartItems = [];
+        state.error = action.payload;
+      }
+    );
     //reset
     builder.addCase(resetSuccessAction.pending, (state, action) => {
       state.loading = false;
