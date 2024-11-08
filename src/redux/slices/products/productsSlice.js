@@ -141,13 +141,11 @@ const productSlice = createSlice({
       state.loading = true;
     });
     builder.addCase(fetchProductsAction.fulfilled, (state, action) => {
-      state.loading = true;
-      state.isAdded = true;
+      state.loading = false;
       state.products = action.payload;
     });
     builder.addCase(fetchProductsAction.rejected, (state, action) => {
       state.loading = false;
-      state.isAdded = false;
       state.products = null;
       state.error = action.payload;
     });

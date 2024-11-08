@@ -21,6 +21,9 @@ import baseURL from "../../../utils/baseURL";
 import { fetchBrandsAction } from "../../../redux/slices/brands/brandsSlice";
 import { fetchColorsAction } from "../../../redux/slices/colors/colorsSlice";
 import { fetchProductsAction } from "../../../redux/slices/products/productsSlice";
+import ErrorMsg from "../../ErrorMsg/ErrorMsg";
+import NoDataFound from "../../NoDataFound/NoDataFound";
+import LoadingComponent from "../../LoadingComp/LoadingComponent";
 const sortOptions = [
   { name: "Most Popular", href: "#", current: true },
   { name: "Best Rating", href: "#", current: false },
@@ -80,6 +83,7 @@ export default function ProductsFilters() {
   if (brand) productUrl += `&brand=${brand}`;
   if (size) productUrl += `&size=${size}`;
   if (price) productUrl += `&price=${price}`;
+  if (color) productUrl += `&color=${color}`;
   console.log(productUrl);
   //Fetch all products
   useEffect(() => {
@@ -88,21 +92,20 @@ export default function ProductsFilters() {
   //Fetch all brands
   useEffect(() => {
     dispatch(fetchBrandsAction());
-  }, []);
+  }, [dispatch]);
   //Fetch all colors
   useEffect(() => {
     dispatch(fetchColorsAction());
-  }, []);
+  }, [dispatch]);
   //Get data from store
   const { brands } = useSelector((state) => state?.brands.brands);
   const { colors } = useSelector((state) => state?.colors.colors);
-  const { products } = useSelector((state) => state?.products?.products);
-
-  let colorsLoading;
-  let colorsError;
-  let productsLoading;
-  let productsError;
-
+  const {
+    products: { products },
+    loading,
+    error,
+  } = useSelector((state) => state?.products);
+  let colorsLoading , colorsError;
   return (
     <div className="bg-white">
       <div>
@@ -730,10 +733,12 @@ export default function ProductsFilters() {
               </form>
 
               {/* Product grid */}
-              {productsLoading ? (
-                <h2 className="text-xl">Loading...</h2>
-              ) : productsError ? (
-                <h2 className="text-red-500">{productsError}</h2>
+              {loading ? (
+                <LoadingComponent />
+              ) : error ? (
+                <ErrorMsg message={error?.message} />
+              ) : products?.length <= 0 ? (
+                <NoDataFound />
               ) : (
                 <Products products={products} />
               )}
