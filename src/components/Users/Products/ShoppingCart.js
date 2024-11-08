@@ -13,7 +13,6 @@ import {
 } from "../../../redux/slices/Carts/cartsSlice";
 
 export default function ShoppingCart() {
-  let changeOrderItemQtyHandler;
   let removeOrderItemFromLocalStorageHandler;
   let calculateTotalDiscountedPrice;
   let error;
@@ -27,7 +26,13 @@ export default function ShoppingCart() {
   useEffect(() => {
     dispatch(getCartItemsFromLocalStorageAction());
   }, [dispatch]);
+  //Get cart from store
   const { cartItems } = useSelector((state) => state?.carts);
+  //Add to cart handler
+  const changeOrderItemQtyHandler = (productID, qty) => {
+    dispatch(changeOrderItemQty({productID, qty}));
+    dispatch(getCartItemsFromLocalStorageAction());
+  };
   return (
     <div className="bg-white">
       <div className="mx-auto max-w-2xl px-4 pt-16 pb-24 sm:px-6 lg:max-w-7xl lg:px-8">
@@ -72,7 +77,7 @@ export default function ShoppingCart() {
                         </div>
                         <p className="mt-1 text-sm font-medium text-gray-900">
                           {/* $ {product.price} X {product.qty} */}${" "}
-                          {product.totalPrice}
+                          {product.price} x {product.qty} = {product.totalPrice}
                         </p>
                       </div>
 
@@ -81,24 +86,15 @@ export default function ShoppingCart() {
                           Quantity, {product.name}
                         </label>
                         <select
-                          // onChange={(e) =>
-                          //   changeOrderItemQtyHandler(
-                          //     product?.productID,
-                          //     e.target.value
-                          //   )
-                          // }
-                          onChange={(e) =>
-                            dispatch(
-                              changeOrderItemQty({
-                                productID: product?._id,
-                                qty: e.target.value,
-                              })
-                            )
-                          }
+                          onChange={(e) => {
+                            changeOrderItemQtyHandler(
+                              product?._id,
+                              e.target.value
+                            );
+                          }}
                           className="max-w-full rounded-md border border-gray-300 py-1.5 text-left text-base font-medium leading-5 text-gray-700 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm"
                         >
                           {/* use the qty  */}
-
                           <option value={1}>1</option>
                           <option value={2}>2</option>
                           <option value={3}>3</option>
