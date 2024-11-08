@@ -76,17 +76,15 @@ export default function ProductsFilters() {
   const [size, setSize] = useState("");
   //Build up URL
   let productUrl = `${baseURL}/products`;
-  if(category){
-    productUrl += `?category=${category}`;
-  }
-  if(brand){
-    productUrl += `&brand=${brand}`
-  }
+  if (category) productUrl += `?category=${category}`;
+  if (brand) productUrl += `&brand=${brand}`;
+  if (size) productUrl += `&size=${size}`;
+  if (price) productUrl += `&price=${price}`;
   console.log(productUrl);
   //Fetch all products
   useEffect(() => {
     dispatch(fetchProductsAction({ url: productUrl }));
-  }, []);
+  }, [category, brand, size, color, price]);
   //Fetch all brands
   useEffect(() => {
     dispatch(fetchBrandsAction());
@@ -95,11 +93,11 @@ export default function ProductsFilters() {
   useEffect(() => {
     dispatch(fetchColorsAction());
   }, []);
-  //Get data from store 
-  const {brands} = useSelector(state => state?.brands.brands);
-  const {colors} = useSelector(state => state?.colors.colors);
-  const {products} = useSelector(state => state?.products?.products);
-  
+  //Get data from store
+  const { brands } = useSelector((state) => state?.brands.brands);
+  const { colors } = useSelector((state) => state?.colors.colors);
+  const { products } = useSelector((state) => state?.products?.products);
+
   let colorsLoading;
   let colorsError;
   let productsLoading;
@@ -409,16 +407,16 @@ export default function ProductsFilters() {
                           </h3>
                           <Disclosure.Panel className="pt-6">
                             <div className="space-y-6">
-                              {sizeCategories.map((option) => (
-                                <div key={option} className="flex items-center">
+                              {sizeCategories.map((size) => (
+                                <div key={size} className="flex items-center">
                                   <input
                                     type="radio"
                                     name="size"
-                                    onClick={() => setSize(option)}
+                                    onClick={() => setSize(size)}
                                     className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                                   />
                                   <label className="ml-3 min-w-0 flex-1 text-gray-500">
-                                    {option}
+                                    {size}
                                   </label>
                                 </div>
                               ))}
