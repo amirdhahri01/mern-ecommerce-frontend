@@ -138,13 +138,14 @@ export default function Product() {
       addOrderToCart({
         cartItem: {
           _id: product?._id,
-          qty: product?.qty,
+          qty: 1,
           name: product?.name,
           price: product?.price,
           description: product?.description,
           color: selectedColor,
           size: selectedSize,
           image: product?.images[0],
+          totalPrice: product?.price,
         },
       })
     );
@@ -153,6 +154,7 @@ export default function Product() {
       title: "Good Job",
       text: "Product added to cart successfully",
     });
+    return dispatch(getCartItemsFromLocalStorageAction());
   };
   //Get cart items
   useEffect(() => {

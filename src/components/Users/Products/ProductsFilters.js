@@ -80,10 +80,34 @@ export default function ProductsFilters() {
   //Build up URL
   let productUrl = `${baseURL}/products`;
   if (category) productUrl += `?category=${category}`;
-  if (brand) productUrl += `&brand=${brand}`;
-  if (size) productUrl += `&size=${size}`;
-  if (price) productUrl += `&price=${price}`;
-  if (color) productUrl += `&color=${color}`;
+  if (brand) {
+    if (category) {
+      productUrl += `&brand=${brand}`;
+    } else {
+      productUrl += `?brand=${brand}`;
+    }
+  }
+  if (size) {
+    if (category || brand) {
+      productUrl += `&size=${size}`;
+    } else {
+      productUrl += `?size=${size}`;
+    }
+  }
+  if (price) {
+    if (category || brand || size) {
+      productUrl += `&price=${price}`;
+    } else {
+      productUrl += `?price=${price}`;
+    }
+  }
+  if (color) {
+    if (category || brand || size || price) {
+      productUrl += `&color=${color}`;
+    } else {
+      productUrl += `?color=${color}`;
+    }
+  }
   //Fetch all products
   useEffect(() => {
     dispatch(fetchProductsAction({ url: productUrl }));
