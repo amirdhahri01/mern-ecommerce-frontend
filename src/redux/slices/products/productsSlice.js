@@ -129,7 +129,7 @@ const productSlice = createSlice({
     builder.addCase(createProductAction.rejected, (state, action) => {
       state.loading = false;
       state.isAdded = false;
-      state.product = null;
+      state.product = {};
       state.error = action.payload;
     });
     //reset error
@@ -142,11 +142,11 @@ const productSlice = createSlice({
     });
     builder.addCase(fetchProductsAction.fulfilled, (state, action) => {
       state.loading = false;
-      state.products = action.payload;
+      state.products = action.payload.products;
     });
     builder.addCase(fetchProductsAction.rejected, (state, action) => {
       state.loading = false;
-      state.products = null;
+      state.products = [];
       state.error = action.payload;
     });
     //Fetch product

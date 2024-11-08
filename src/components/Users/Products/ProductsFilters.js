@@ -84,7 +84,6 @@ export default function ProductsFilters() {
   if (size) productUrl += `&size=${size}`;
   if (price) productUrl += `&price=${price}`;
   if (color) productUrl += `&color=${color}`;
-  console.log(productUrl);
   //Fetch all products
   useEffect(() => {
     dispatch(fetchProductsAction({ url: productUrl }));
@@ -100,12 +99,8 @@ export default function ProductsFilters() {
   //Get data from store
   const { brands } = useSelector((state) => state?.brands.brands);
   const { colors } = useSelector((state) => state?.colors.colors);
-  const {
-    products : { products },
-    loading,
-    error,
-  } = useSelector((state) => state?.products);
-  let colorsLoading , colorsError;
+  const { products, loading, error } = useSelector((state) => state?.products);
+  let colorsLoading, colorsError;
   return (
     <div className="bg-white">
       <div>
