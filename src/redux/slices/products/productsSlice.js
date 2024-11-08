@@ -1,9 +1,9 @@
 import axios from "axios";
-import baseURL from "../../../utils/baseURL";
 import {
   resetErrAction,
   resetSuccessAction,
 } from "../globalActions/globalActions";
+import baseURL from "../../../utils/baseURL";
 const { createAsyncThunk, createSlice } = require("@reduxjs/toolkit");
 //InitialState
 const initialState = {
@@ -72,7 +72,7 @@ export const createProductAction = createAsyncThunk(
 //Fetch products action
 export const fetchProductsAction = createAsyncThunk(
   "products/fetch",
-  async (payload, { rejectWithValue, getState, dispatch }) => {
+  async ({ url }, { rejectWithValue, getState, dispatch }) => {
     try {
       const token = getState()?.users?.userAuth?.userInfo?.token;
       const config = {
@@ -80,7 +80,7 @@ export const fetchProductsAction = createAsyncThunk(
           Authorization: `Bearer ${token}`,
         },
       };
-      const { data } = await axios.get(`${baseURL}/products`, config);
+      const { data } = await axios.get(`${url}`, config);
       return data;
     } catch (error) {
       return rejectWithValue(error?.response?.data);
