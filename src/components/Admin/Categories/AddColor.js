@@ -2,10 +2,10 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { Link } from "react-router-dom";
-import { createBrandAction } from "../../../redux/slices/brands/brandsSlice";
 import SuccessMsg from "../../SuccessMsg/SuccessMsg";
 import ErrorMsg from "../../ErrorMsg/ErrorMsg";
 import Loading from "react-loading";
+import { createColorAction } from "../../../redux/slices/colors/colorsSlice";
 
 export default function AddColor() {
   //dispatch
@@ -21,13 +21,15 @@ export default function AddColor() {
   //onSubmit
   const handleOnSubmit = (e) => {
     e.preventDefault();
-    dispatch(createBrandAction(formData));
+    dispatch(createColorAction(formData));
     setFormData({ name: "" });
   };
   //Get data from store
   const { color, error, loading, isAdded } = useSelector(
     (state) => state?.colors
   );
+  console.log(color);
+  
   return (
     <>
       {isAdded && <SuccessMsg message="Color Created Successfully" />}
