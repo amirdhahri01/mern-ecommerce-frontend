@@ -10,10 +10,10 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   changeOrderItemQty,
   getCartItemsFromLocalStorageAction,
+  removeOrderItemAction,
 } from "../../../redux/slices/Carts/cartsSlice";
 
 export default function ShoppingCart() {
-  let removeOrderItemFromLocalStorageHandler;
   let calculateTotalDiscountedPrice;
   let error;
   let couponFound;
@@ -30,7 +30,12 @@ export default function ShoppingCart() {
   const { cartItems } = useSelector((state) => state?.carts);
   //Add to cart handler
   const changeOrderItemQtyHandler = (productID, qty) => {
-    dispatch(changeOrderItemQty({productID, qty}));
+    dispatch(changeOrderItemQty({ productID, qty }));
+    dispatch(getCartItemsFromLocalStorageAction());
+  };
+  //Remove cart item handler
+  const removeOrderItemFromLocalStorageHandler = (productID, qty) => {
+    dispatch(removeOrderItemAction({ productID }));
     dispatch(getCartItemsFromLocalStorageAction());
   };
   return (

@@ -15,7 +15,7 @@ const initialState = {
   isDeleted: false,
 };
 
-//Add product to cat
+//Add product to cart
 export const addOrderToCart = createAsyncThunk(
   "cart/add-to-cart",
   ({ cartItem }, { rejectWithValue, dispatch }) => {
@@ -27,7 +27,7 @@ export const addOrderToCart = createAsyncThunk(
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
   }
 );
-//Add product to cat
+//Get cart items from localStorage
 export const getCartItemsFromLocalStorageAction = createAsyncThunk(
   "cart/get-order-items",
   (payload, { rejectWithValue, dispatch }) => {
@@ -54,6 +54,17 @@ export const changeOrderItemQty = createAsyncThunk(
     });
     localStorage.setItem("cartItems", JSON.stringify(newCartItems));
     return cartItems;
+  }
+);
+//Remove item from cart
+export const removeOrderItemAction = createAsyncThunk(
+  "cart/remove-order-item",
+  ({ productID }, { rejectWithValue, dispatch }) => {
+    const cartItems = localStorage.getItem("cartItems")
+      ? JSON.parse(localStorage.getItem("cartItems"))
+      : [];
+    const newItems = cartItems.filter((item) => item._id !== productID);
+    localStorage.setItem("cartItems", JSON.stringify(newItems));
   }
 );
 const cartSlice = createSlice({
@@ -96,8 +107,6 @@ const cartSlice = createSlice({
         state.error = action.payload;
       }
     );
-    //Change order item quentity
-
     //reset
     builder.addCase(resetSuccessAction.pending, (state, action) => {
       state.loading = false;
