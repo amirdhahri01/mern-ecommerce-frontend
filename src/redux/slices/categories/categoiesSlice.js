@@ -29,7 +29,6 @@ export const createCategoryAction = createAsyncThunk(
       formData.append("file", image);
       //Token - Authenticated
       const token = getState()?.users?.userAuth?.userInfo?.token;
-      console.log(token, image, name);
       const config = {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -85,20 +84,19 @@ const categorySlice = createSlice({
     });
     builder.addCase(fetchCategoriesAction.fulfilled, (state, action) => {
       state.loading = true;
-      state.isAdded = true;
       state.categories = action.payload;
-    });
-    builder.addCase(resetErrAction.pending, (state, action) => {
-      state.isAdded = false;
     });
     builder.addCase(fetchCategoriesAction.rejected, (state, action) => {
       state.loading = false;
-      state.isAdded = false;
       state.categories = null;
       state.error = action.payload;
     });
+    //Reset
+    builder.addCase(resetErrAction.pending, (state, action) => {
+      state.error = null;
+    });
     builder.addCase(resetSuccessAction.pending, (state, action) => {
-      state.error = false;
+      state.isAdded = false;
     });
   },
 });

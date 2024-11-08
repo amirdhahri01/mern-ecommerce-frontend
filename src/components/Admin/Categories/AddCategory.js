@@ -17,7 +17,6 @@ export default function CategoryToAdd() {
   const fileHandleChange = (e) => {
     const newFile = e.target.files[0];
     //Validation
-    console.log(newFile?.size);
     if (newFile?.size > 1000000) {
       setFileError(`${newFile.name} is too large`);
     }
@@ -30,7 +29,6 @@ export default function CategoryToAdd() {
   const handleOnChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-  let { error, isAdded, loading } = useSelector((state) => state?.categories);
   //onSubmit
   const handleOnSubmit = (e) => {
     e.preventDefault();
@@ -41,10 +39,11 @@ export default function CategoryToAdd() {
     setFile(null);
     setFileError(null);
   };
+  let { error, isAdded, loading } = useSelector((state) => state?.categories);
   return (
     <>
       {error && <ErrorComponent message={error?.message} />}
-      {fileError && <ErrorComponent message={fileError} />}
+      {fileError && <ErrorComponent message={fileError} setFileError/>}
       {isAdded && <SuccessMsg message="Category added successfully" />}
       <div className="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
@@ -194,4 +193,5 @@ export default function CategoryToAdd() {
       </div>
     </>
   );
+  
 }
