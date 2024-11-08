@@ -33,6 +33,10 @@ export default function ShoppingCart() {
     dispatch(changeOrderItemQty({ productID, qty }));
     dispatch(getCartItemsFromLocalStorageAction());
   };
+  //Calculate total price
+  const sumTotalPrice = cartItems.reduce((acc, current) => {
+    return acc + current?.totalPrice;
+  }, 0);
   //Remove cart item handler
   const removeOrderItemFromLocalStorageHandler = (productID, qty) => {
     dispatch(removeOrderItemAction({ productID }));
@@ -143,7 +147,7 @@ export default function ShoppingCart() {
               <div className="flex items-center justify-between">
                 <dt className="text-sm text-gray-600">Subtotal</dt>
                 <dd className="text-sm font-medium text-gray-900">
-                  {/* $ {calculateTotalDiscountedPrice().toFixed(2)} */}
+                  $ {sumTotalPrice}.00
                 </dd>
               </div>
               <div className="flex items-center justify-between border-t border-gray-200 pt-4"></div>
