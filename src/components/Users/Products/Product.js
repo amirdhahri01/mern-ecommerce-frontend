@@ -146,6 +146,7 @@ export default function Product() {
           size: selectedSize,
           image: product?.images[0],
           totalPrice: product?.price,
+          qtyLeft: product?.qtyLeft,
         },
       })
     );
