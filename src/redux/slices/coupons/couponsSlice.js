@@ -110,15 +110,15 @@ const couponSlice = createSlice({
       state.error = action.payload;
     });
     //Fetch single coupon
-    builder.addCase(fetchCouponsAction.pending, (state) => {
+    builder.addCase(fetchCouponAction.pending, (state) => {
       state.loading = true;
     });
-    builder.addCase(fetchCouponsAction.fulfilled, (state, action) => {
+    builder.addCase(fetchCouponAction.fulfilled, (state, action) => {
       state.loading = false;
       state.isAdded = true;
       state.coupon = action.payload;
     });
-    builder.addCase(fetchCouponsAction.rejected, (state, action) => {
+    builder.addCase(fetchCouponAction.rejected, (state, action) => {
       state.loading = false;
       state.isAdded = false;
       state.coupon = {};
