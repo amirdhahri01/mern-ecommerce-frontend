@@ -37,7 +37,25 @@ export const getCartItemsFromLocalStorageAction = createAsyncThunk(
     return cartItems;
   }
 );
-
+//Change order item quantity
+export const changeOrderItemQty = createAsyncThunk(
+  "cart/change-item-qty",
+  ({ productID, qty }, { rejectWithValue, dispatch }) => {
+    const cartItems = localStorage.getItem("cartItems")
+      ? JSON.parse(localStorage.getItem("cartItems"))
+      : [];
+    const newCartItems = cartItems.map((item) => {
+      if (item?._id.toString() === productID?.toString()) {
+        const newPrice = item?.price * qty;
+        item.qty = qty;
+        item.totalPrice = newPrice;
+      }
+      return item;
+    });
+    localStorage.setItem("cartItems", JSON.stringify(newCartItems));
+    return cartItems;
+  }
+);
 const cartSlice = createSlice({
   name: "carts",
   initialState,
@@ -78,6 +96,8 @@ const cartSlice = createSlice({
         state.error = action.payload;
       }
     );
+    //Change order item quentity
+
     //reset
     builder.addCase(resetSuccessAction.pending, (state, action) => {
       state.loading = false;
