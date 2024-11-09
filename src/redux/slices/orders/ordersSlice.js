@@ -13,6 +13,7 @@ const initialState = {
   error: null,
   isAdded: false,
   isUpdated: false,
+  stats: {},
 };
 
 //Place order action
@@ -76,7 +77,49 @@ export const fetchOrderAction = createAsyncThunk(
     }
   }
 );
-
+//Get orders statistics
+export const fetchOrdersStatisticsAction = createAsyncThunk(
+  "orders/statistics",
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const token = getState()?.users?.userAuth?.userInfo?.token;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const { data } = await axios.get(`${baseURL}/orders/sales/stats`, config);
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+//Update order action
+export const updateOrderAction = createAsyncThunk(
+  "order/update-order",
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const { status, id } = payload;
+      //Token - Authenticated
+      const token = getState()?.users?.userAuth?.userInfo?.token;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      //Make request
+      const { data } = await axios.put(
+        `${baseURL}/orders/update/${id}`,
+        { status },
+        config
+      );
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
 const orderSlice = createSlice({
   name: "orders",
   initialState,
@@ -122,14 +165,42 @@ const orderSlice = createSlice({
       state.loading = true;
     });
     builder.addCase(fetchOrderAction.fulfilled, (state, action) => {
-      state.loading = true;
+      state.loading = false;
       state.isAdded = true;
       state.order = action.payload;
     });
     builder.addCase(fetchOrderAction.rejected, (state, action) => {
       state.loading = false;
       state.isAdded = false;
-      state.order = null;
+      state.order = {};
+      state.error = action.payload;
+    });
+    //Get orders sales statistics
+    builder.addCase(fetchOrdersStatisticsAction.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(fetchOrdersStatisticsAction.fulfilled, (state, action) => {
+      state.loading = false;
+      state.stats = action.payload;
+    });
+    builder.addCase(fetchOrdersStatisticsAction.rejected, (state, action) => {
+      state.loading = false;
+      state.stats = {};
+      state.error = action.payload;
+    });
+    //Update order action
+    builder.addCase(updateOrderAction.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(updateOrderAction.fulfilled, (state, action) => {
+      state.loading = true;
+      state.isUpdated = true;
+      state.order = action.payload;
+    });
+    builder.addCase(updateOrderAction.rejected, (state, action) => {
+      state.loading = false;
+      state.order = {};
+      state.isUpdated = false;
       state.error = action.payload;
     });
   },
