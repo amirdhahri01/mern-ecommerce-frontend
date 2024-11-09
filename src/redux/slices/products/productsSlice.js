@@ -118,7 +118,7 @@ const productSlice = createSlice({
       state.loading = true;
     });
     builder.addCase(createProductAction.fulfilled, (state, action) => {
-      state.loading = true;
+      state.loading = false;
       state.isAdded = true;
       state.product = action.payload;
     });

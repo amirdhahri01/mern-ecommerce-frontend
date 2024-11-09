@@ -7,6 +7,7 @@ import { placeOrderAction } from "../../../redux/slices/orders/ordersSlice";
 import { getUserProfileAction } from "../../../redux/slices/users/usersSlice";
 import LoadingComponent from "../../LoadingComp/LoadingComponent";
 import ErrorMsg from "../../ErrorMsg/ErrorMsg";
+import SuccessMsg from "../../SuccessMsg/SuccessMsg";
 
 export default function OrderPayment() {
   //Get data from location

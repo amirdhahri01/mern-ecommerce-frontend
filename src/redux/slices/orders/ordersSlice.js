@@ -86,7 +86,7 @@ const orderSlice = createSlice({
       state.loading = true;
     });
     builder.addCase(placeOrderAction.fulfilled, (state, action) => {
-      state.loading = true;
+      state.loading = false;
       state.isAdded = true;
       state.order = action.payload;
     });
