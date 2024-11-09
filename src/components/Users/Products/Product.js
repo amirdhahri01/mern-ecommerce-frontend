@@ -181,7 +181,7 @@ export default function Product() {
               <h2 className="sr-only">Reviews</h2>
               <div className="flex items-center">
                 <p className="text-sm text-gray-700">
-                  {productDetails?.product?.averageRating}
+                  {isNaN(product?.averageRating) ? 0 : product?.averageRating}
                   <span className="sr-only"> out of 5 stars</span>
                 </p>
                 <div className="ml-1 flex items-center">
@@ -189,7 +189,7 @@ export default function Product() {
                     <StarIcon
                       key={rating}
                       className={classNames(
-                        productDetails?.product?.averageRating > rating
+                        product?.averageRating > rating
                           ? "text-yellow-400"
                           : "text-gray-200",
                         "h-5 w-5 flex-shrink-0"
@@ -390,7 +390,7 @@ export default function Product() {
           </h2>
 
           <div className="mt-6 space-y-10 divide-y divide-gray-200 border-t border-b border-gray-200 pb-10">
-            {productDetails?.product?.reviews.map((review) => (
+            {product?.reviews.map((review) => (
               <div
                 key={review._id}
                 className="pt-10 lg:grid lg:grid-cols-12 lg:gap-x-8"
@@ -412,7 +412,7 @@ export default function Product() {
                       ))}
                     </div>
                     <p className="ml-3 text-sm text-gray-700">
-                      {review.rating}
+                      {review?.rating}
                       <span className="sr-only"> out of 5 stars</span>
                     </p>
                   </div>
@@ -421,21 +421,16 @@ export default function Product() {
                     <h3 className="text-sm font-medium text-gray-900">
                       {review?.message}
                     </h3>
-
-                    <div
-                      className="mt-3 space-y-6 text-sm text-gray-500"
-                      dangerouslySetInnerHTML={{ __html: review.content }}
-                    />
                   </div>
                 </div>
 
                 <div className="mt-6 flex items-center text-sm lg:col-span-4 lg:col-start-1 lg:row-start-1 lg:mt-0 lg:flex-col lg:items-start xl:col-span-3">
-                  <p className="font-medium text-gray-900">{review.author}</p>
+                  <p className="font-medium text-gray-900">{review.user.fullname}</p>
                   <time
-                    dateTime={review.datetime}
+                    dateTime={review.createdAt}
                     className="ml-4 border-l border-gray-200 pl-4 text-gray-500 lg:ml-0 lg:mt-2 lg:border-0 lg:pl-0"
                   >
-                    {review.date}
+                    {new Date(review.createdAt).toLocaleDateString()}
                   </time>
                 </div>
               </div>
