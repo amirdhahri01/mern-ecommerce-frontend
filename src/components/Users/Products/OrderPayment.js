@@ -3,6 +3,8 @@ import AddShippingAddress from "../Forms/AddShippingAddress";
 import { useEffect } from "react";
 import { getCartItemsFromLocalStorageAction } from "../../../redux/slices/Carts/cartsSlice";
 import { useLocation } from "react-router-dom";
+import { placeOrderAction } from "../../../redux/slices/orders/ordersSlice";
+import { getUserProfileAction } from "../../../redux/slices/users/usersSlice";
 
 export default function OrderPayment() {
   //Get data from location
@@ -20,7 +22,25 @@ export default function OrderPayment() {
   const createOrderSubmitHandler = (e) => {
     e.preventDefault();
   };
-
+  //Get user profile
+  //user profile
+  useEffect(() => {
+    dispatch(getUserProfileAction());
+  }, [dispatch]);
+  const { loading, error, profile } = useSelector((state) => state?.users);
+  const user = profile?.user;
+  //Get shipping address
+  const shippingAddress = user?.shippingAddress;
+  //Place order action
+  const placeOrderHandler = () => {
+    dispatch(
+      placeOrderAction({
+        orderItems: cartItems,
+        shippingAddress,
+        sumTotalPrice,
+      })
+    );
+  };
   return (
     <div className="bg-gray-50">
       <main className="mx-auto max-w-7xl px-4 pt-16 pb-24 sm:px-6 lg:px-8">
@@ -94,10 +114,10 @@ export default function OrderPayment() {
 
                 <div className="border-t border-gray-200 py-6 px-4 sm:px-6">
                   <button
-                    onClick={createOrderSubmitHandler}
+                    onClick={placeOrderHandler}
                     className="w-full rounded-md border border-transparent bg-indigo-600 py-3 px-4 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50"
                   >
-                    Confirm Payment - ${calculateTotalDiscountedPrice()}
+                    Confirm Payment - ${sumTotalPrice}
                   </button>
                 </div>
               </div>

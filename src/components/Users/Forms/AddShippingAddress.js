@@ -16,7 +16,6 @@ const AddShippingAddress = () => {
   }, [dispatch]);
   const { loading, error, profile } = useSelector((state) => state?.users);
   const user = profile?.user;
-  console.log(user);
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",

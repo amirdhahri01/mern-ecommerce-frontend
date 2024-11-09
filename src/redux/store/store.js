@@ -6,6 +6,7 @@ import brandReducer from "../slices/brands/brandsSlice";
 import colorReducer from "../slices/colors/colorsSlice";
 import cartReducer from "../slices/Carts/cartsSlice";
 import couponReducer from "../slices/coupons/couponsSlice";
+import orderReducer from "../slices/orders/ordersSlice";
 
 //Store
 const store = configureStore({
@@ -16,7 +17,8 @@ const store = configureStore({
     brands: brandReducer,
     colors: colorReducer,
     carts: cartReducer,
-    coupons: couponReducer
+    coupons: couponReducer,
+    orders:orderReducer
   },
 });
 
