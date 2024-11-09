@@ -1,12 +1,22 @@
+import { useDispatch, useSelector } from "react-redux";
 import CustomerDetails from "./CustomerDetails";
 import ShippingAddressDetails from "./ShippingAddressDetails";
+import { useEffect } from "react";
+import { getUserProfileAction } from "../../../redux/slices/users/usersSlice";
+import LoadingComponent from "../../LoadingComp/LoadingComponent";
+import ErrorMsg from "../../ErrorMsg/ErrorMsg";
 
 export default function CustomerProfile() {
-  let profile;
-  let loading;
-  let error;
-  let orders = [];
-
+  //dispatch
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getUserProfileAction());
+  }, [dispatch]);
+  //Get date from store
+  const { error, loading, profile } = useSelector((state) => state?.users);
+  //Get orders
+  const orders = profile?.user?.orders;
+  
   return (
     <>
       <div className="flex flex-wrap -mx-3 -mb-3 md:mb-0">
@@ -22,9 +32,9 @@ export default function CustomerProfile() {
       </div>
 
       {loading ? (
-        <h2>Loading...</h2>
+        <LoadingComponent />
       ) : error ? (
-        <h2>{error}</h2>
+        <ErrorMsg message={error.message} />
       ) : orders?.length <= 0 ? (
         <h2 className="text-center mt-10">No Order Found</h2>
       ) : (
@@ -69,7 +79,8 @@ export default function CustomerProfile() {
                       Status:{" "}
                       <time
                         dateTime="2021-03-22"
-                        className="font-medium text-gray-900">
+                        className="font-medium text-gray-900"
+                      >
                         {order?.status}
                       </time>
                     </p>
@@ -92,13 +103,14 @@ export default function CustomerProfile() {
                       {order?.orderItems?.map((product) => (
                         <div
                           key={product.id}
-                          className="border-t border-b border-gray-200 bg-white shadow-sm sm:rounded-lg sm:border">
+                          className="border-t border-b border-gray-200 bg-white shadow-sm sm:rounded-lg sm:border"
+                        >
                           <div className="py-6 px-4 sm:px-6 lg:grid lg:grid-cols-12 lg:gap-x-8 lg:p-8">
                             <div className="sm:flex lg:col-span-7">
                               <div className="aspect-w-1 aspect-h-1 w-full flex-shrink-0 overflow-hidden rounded-lg sm:aspect-none sm:h-40 sm:w-40">
                                 <img
-                                  src={product.imageSrc}
-                                  alt={product.imageAlt}
+                                  src={product.image}
+                                  alt={product.name}
                                   className="h-full w-full object-cover object-center sm:h-full sm:w-full"
                                 />
                               </div>
@@ -124,12 +136,14 @@ export default function CustomerProfile() {
                               fill="none"
                               stroke="currentColor"
                               viewBox="0 0 24 24"
-                              xmlns="http://www.w3.org/2000/svg">
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
                               <path
                                 stroke-linecap="round"
                                 stroke-linejoin="round"
                                 stroke-width="2"
-                                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                              ></path>
                             </svg>
                             <p className="ml-2 text-sm font-medium text-gray-500">
                               Payment Status: {order.paymentStatus}

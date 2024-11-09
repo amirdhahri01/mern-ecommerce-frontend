@@ -36,7 +36,7 @@ import ThanksForOrdering from "./components/Users/Products/ThanksForOrdering";
 const App = () => {
   return (
     <BrowserRouter>
-      <Navbar />
+      {/* <Navbar /> */}
       {/* hide navbar if admin */}
       <Routes>
         {/* nested route */}
