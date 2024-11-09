@@ -11,6 +11,7 @@ import baseURL from "../../utils/baseURL";
 import logo from "./logo3.png";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCategoriesAction } from "../../redux/slices/categories/categoiesSlice";
+import { getCartItemsFromLocalStorageAction } from "../../redux/slices/Carts/cartsSlice";
 
 export default function Navbar() {
   //Dispatch
@@ -19,13 +20,15 @@ export default function Navbar() {
     dispatch(fetchCategoriesAction());
   }, [dispatch]);
   //get data from store
-  const {  categories } = useSelector(
-    (state) => state?.categories?.categories
-  );
-  const categoriesToDisplay = categories?.slice(0 , 3);
+  const { categories } = useSelector((state) => state?.categories?.categories);
+  const categoriesToDisplay = categories?.slice(0, 3);
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
+  //Get data from store
+  useEffect(() => {
+    dispatch(getCartItemsFromLocalStorageAction());
+  }, [dispatch]);
+  const { cartItems } = useSelector((state) => state?.carts);
   //get cart items from local storage
   let cartItemsFromLocalStorage;
   //get login user from local storage
@@ -308,9 +311,7 @@ export default function Navbar() {
                             aria-hidden="true"
                           />
                           <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">
-                            {cartItemsFromLocalStorage?.length > 0
-                              ? cartItemsFromLocalStorage.length
-                              : 0}
+                            {cartItems?.length > 0 ? cartItems.length : 0}
                           </span>
                         </Link>
                       </div>

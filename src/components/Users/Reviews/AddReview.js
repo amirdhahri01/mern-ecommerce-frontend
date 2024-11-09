@@ -1,6 +1,16 @@
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { createReviewAction } from "../../../redux/slices/reviews/reviewsSlice";
+import { useParams } from "react-router-dom";
+import LoadingComponent from "../../LoadingComp/LoadingComponent";
+import ErrorMsg from "../../ErrorMsg/ErrorMsg";
+import SuccessMsg from "../../SuccessMsg/SuccessMsg";
 
 export default function AddReview() {
+  //Dispatch
+  const dispatch = useDispatch();
+  //Get params
+  const { id } = useParams();
   //---form data---
   const [formData, setFormData] = useState({
     rating: "",
@@ -15,10 +25,16 @@ export default function AddReview() {
   //onSubmit
   const handleOnSubmit = (e) => {
     e.preventDefault();
+    dispatch(createReviewAction({ ...formData, id }));
+    //reset
+    setFormData({ rating: "", message: "" });
   };
-
+  //Get data from store
+  const { loading, error, isAdded } = useSelector((state) => state?.reviews);
   return (
     <>
+      {error && <ErrorMsg message={error.message} />}
+      {isAdded && <SuccessMsg message="Thanks for the review" />}
       <div className="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
           <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
@@ -38,7 +54,8 @@ export default function AddReview() {
               <div>
                 <label
                   htmlFor="location"
-                  className="block text-sm font-medium text-gray-700">
+                  className="block text-sm font-medium text-gray-700"
+                >
                   Rating
                 </label>
                 <select
@@ -46,17 +63,13 @@ export default function AddReview() {
                   onChange={handleOnChange}
                   name="rating"
                   className="mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 border-2 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                  defaultValue="Canada">
+                  defaultValue="Canada"
+                >
                   {/* review rating */}
-
                   <option value="1">1</option>
-                  <option value="1.5">1.5</option>
                   <option value="2">2</option>
-                  <option value="2.5">2.5</option>
                   <option value="3">3</option>
-                  <option value="3.5">3.5</option>
                   <option value="4">4</option>
-                  <option value="4.5">4.5</option>
                   <option value="5">5 </option>
                 </select>
               </div>
@@ -65,7 +78,8 @@ export default function AddReview() {
               <div>
                 <label
                   htmlFor="comment"
-                  className="block text-sm font-medium text-gray-700">
+                  className="block text-sm font-medium text-gray-700"
+                >
                   Message
                 </label>
                 <div className="mt-1">
@@ -79,17 +93,23 @@ export default function AddReview() {
                 </div>
               </div>
               <div>
-                <button
-                  type="submit"
-                  className="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                  Add New Review
-                </button>
+                {loading ? (
+                  <LoadingComponent />
+                ) : (
+                  <button
+                    type="submit"
+                    className="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                  >
+                    Add New Review
+                  </button>
+                )}
               </div>
 
               <div>
                 <button
                   type="submit"
-                  className="flex w-full justify-center rounded-md border border-transparent bg-red-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                  className="flex w-full justify-center rounded-md border border-transparent bg-red-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                >
                   I have Changed my mind
                 </button>
               </div>
