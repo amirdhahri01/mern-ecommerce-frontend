@@ -31,6 +31,7 @@ import ManageOrders from "./components/Admin/Orders/ManageOrders";
 import Customers from "./components/Admin/Orders/Customers";
 import BrandsColorsList from "./components/Admin/Categories/BrandsColorsList";
 import AdminRoute from "./components/AuthRoute/AdminRoute";
+import ThanksForOrdering from "./components/Users/Products/ThanksForOrdering";
 
 const App = () => {
   return (
@@ -78,6 +79,7 @@ const App = () => {
         <Route path="/products-filters" element={<ProductsFilters />} />
         <Route path="/products/:id" element={<Product />} />
         <Route path="/all-categories" element={<AllCategories />} />
+        <Route path="/success" element={<ThanksForOrdering />} />
         {/* review */}
         <Route path="/add-review/:id" element={<AddReview />} />
         {/* shopping cart */}

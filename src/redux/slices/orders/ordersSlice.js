@@ -34,7 +34,7 @@ export const placeOrderAction = createAsyncThunk(
         { orderItems, shippingAddress, totalPrice },
         config
       );
-      return data;
+      return window.open(data?.url);
     } catch (error) {
       return rejectWithValue(error?.response?.data);
     }
