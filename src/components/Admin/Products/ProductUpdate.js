@@ -6,16 +6,28 @@ import makeAnimated from "react-select/animated";
 import ErrorMsg from "../../ErrorMsg/ErrorMsg";
 import LoadingComponent from "../../LoadingComp/LoadingComponent";
 import SuccessMsg from "../../SuccessMsg/SuccessMsg";
-import { createProductAction } from "../../../redux/slices/products/productsSlice";
 import { fetchCategoriesAction } from "../../../redux/slices/categories/categoiesSlice";
 import { fetchBrandsAction } from "../../../redux/slices/brands/brandsSlice";
 import { fetchColorsAction } from "../../../redux/slices/colors/colorsSlice";
+import {
+  fetchProductAction,
+  updateProductAction,
+} from "../../../redux/slices/products/productsSlice";
+import { useParams } from "react-router-dom";
 //animated components for react-select
 const animatedComponents = makeAnimated();
 
-export default function AddProduct() {
+export default function ProductUpdate() {
+  //dispatch
   const dispatch = useDispatch();
-
+  //Get product id from params
+  const { id } = useParams();
+  useEffect(() => {
+    dispatch(fetchProductAction({ productID: id }));
+  }, [id, dispatch]);
+  const {
+    product: { product },
+  } = useSelector((state) => state?.products);
   //Files
   const [files, setFiles] = useState([]);
   const [fileErrors, setFileErrors] = useState([]);
@@ -45,24 +57,20 @@ export default function AddProduct() {
   const sizeOptionsCoverted = sizes?.map((size) => {
     return { value: size, label: size };
   });
-
   //Categories
   useEffect(() => {
     dispatch(fetchCategoriesAction());
   }, [dispatch]);
   //Select data from store
   const { categories } = useSelector((state) => state?.categories?.categories);
-
   //Brands
   useEffect(() => {
     dispatch(fetchBrandsAction());
   }, [dispatch]);
   //Select data from store
   const { brands } = useSelector((state) => state?.brands?.brands);
-
   //Colors
   const [colorsOption, setColorsOption] = useState([]);
-
   useEffect(() => {
     dispatch(fetchColorsAction());
   }, [dispatch]);
@@ -78,31 +86,31 @@ export default function AddProduct() {
   const handleColorChangeOption = (colors) => {
     setColorsOption(colors);
   };
+  console.log(product?.name);
+
   //---form data---
   const [formData, setFormData] = useState({
-    name: "",
-    description: "",
-    price: "",
-    totalQty: "",
+    name: product?.name,
+    description: product?.description,
+    price: product?.price,
+    totalQty: product?.totalQty,
   });
-
   //onChange
   const handleOnChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
   //Get product from store
-  const { product, isAdded, loading, error } = useSelector(
-    (state) => state?.products
-  );
+  const { isUpdated, loading, error } = useSelector((state) => state?.products);
   //onSubmit
   const handleOnSubmit = (e) => {
     e.preventDefault();
     dispatch(
-      createProductAction({
+      updateProductAction({
         ...formData,
         files,
         colors: colorsOption?.map((color) => color?.value),
         sizes: sizeOption?.map((size) => size?.value),
+        id,
       })
     );
     //reset form data
@@ -120,11 +128,11 @@ export default function AddProduct() {
       {fileErrors.length > 0 && (
         <ErrorMsg message="File too large or upload an image" />
       )}
-      {isAdded && <SuccessMsg message="Product Added Successfully" />}
+      {isUpdated && <SuccessMsg message="Product Updated Successfully" />}
       <div className="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
           <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
-            Create New Product
+            Update Product
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
             <p className="font-medium text-indigo-600 hover:text-indigo-500">
@@ -335,7 +343,7 @@ export default function AddProduct() {
                     type="submit"
                     className="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                   >
-                    Add Product
+                    Update Product
                   </button>
                 )}
               </div>

@@ -132,12 +132,9 @@ export default function ManageStocks() {
                           <div className="text-gray-900">
                             {product?.category}
                           </div>
-                          <div className="text-gray-500">
-                            {product.department}
-                          </div>
                         </td>
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                          {product?.isOutOfStock ? (
+                          {product?.qtyLeft <= 0 ? (
                             <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
                               Out of Stock
                             </span>

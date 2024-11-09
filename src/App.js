@@ -32,6 +32,7 @@ import Customers from "./components/Admin/Orders/Customers";
 import BrandsColorsList from "./components/Admin/Categories/BrandsColorsList";
 import AdminRoute from "./components/AuthRoute/AdminRoute";
 import ThanksForOrdering from "./components/Users/Products/ThanksForOrdering";
+import ProductUpdate from "./components/Admin/Products/ProductUpdate";
 
 const App = () => {
   return (
@@ -52,7 +53,7 @@ const App = () => {
           <Route path="" element={<OrdersList />} />
           <Route path="add-product" element={<AddProduct />} />
           <Route path="manage-products" element={<ManageStocks />} />
-          <Route path="products/edit/:id" element={<UpdateProduct />} />
+          <Route path="products/edit/:id" element={<ProductUpdate />} />
           {/* coupons */}
           <Route path="add-coupon" element={<AddCoupon />} />
           <Route path="manage-coupon" element={<ManageCoupons />} />
