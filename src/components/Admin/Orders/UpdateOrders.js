@@ -13,8 +13,8 @@ const UpdateOrders = () => {
 
   const onChange = (e) => {
     dispatch(updateOrderAction({ statuc: e.target.value, id }));
+    window.location.href = "/admin";
   };
-
   return (
     <div className="mt-6 flex items-center space-x-4 divide-x divide-gray-200 border-t border-gray-200 pt-4 text-sm font-medium sm:mt-0 sm:ml-4 sm:border-none sm:pt-0">
       <div className="flex flex-1 justify-center">

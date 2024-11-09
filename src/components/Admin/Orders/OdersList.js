@@ -90,7 +90,13 @@ export default function OrdersList() {
                     {order?.orderNumber}
                   </td>
                   <td className="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">
-                    {order?.paymentStatus}
+                    {order?.paymentStatus === "Not paid" ? (
+                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-600 text-gray-300">
+                        Not paid
+                      </span>
+                    ) : (
+                      order.paymentStatus
+                    )}
                   </td>
                   <td className="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">
                     {new Date(order?.createdAt).toLocaleDateString()}
@@ -105,7 +111,7 @@ export default function OrdersList() {
                     {order?.totalPrice}
                   </td>
                   <td className="py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                    {order?.paymentStatus === "Not paid" ? (
+                    {order?.paymentStatus !== "Not paid" ? (
                       <Link
                         style={{ cursor: "not-allowed" }}
                         className="text-gray-300"
