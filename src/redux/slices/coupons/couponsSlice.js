@@ -33,7 +33,7 @@ export const createCouponAction = createAsyncThunk(
       };
       //Images
       const { data } = await axios.post(
-        `${baseURL}/brands`,
+        `${baseURL}/coupons`,
         {
           code,
           startDate,
@@ -53,7 +53,13 @@ export const fetchCouponsAction = createAsyncThunk(
   "coupons/fetch-all",
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
-      const { data } = await axios.get(`${baseURL}/coupons`);
+      const token = getState()?.users?.userAuth?.userInfo?.token;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const { data } = await axios.get(`${baseURL}/coupons`, config);
       return data;
     } catch (error) {
       return rejectWithValue(error?.response?.data);
@@ -68,6 +74,51 @@ export const fetchCouponAction = createAsyncThunk(
       const { data } = await axios.get(
         `${baseURL}/coupons/single?code=${code}`,
         { code }
+      );
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+//Update coupon action
+export const updateCouponAction = createAsyncThunk(
+  "coupons/update-coupon",
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const { id, code, startDate, endDate, discount } = payload;
+      const token = getState()?.users?.userAuth?.userInfo?.token;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const { data } = await axios.put(
+        `${baseURL}/coupons/update/${id}`,
+        { code, startDate, endDate, discount },
+        config
+      );
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+//Delete coupon action
+export const deleteCouponAction = createAsyncThunk(
+  "coupons/delete-coupon",
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const { id } = payload;
+      const token = getState()?.users?.userAuth?.userInfo?.token;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const { data } = await axios.delete(
+        `${baseURL}/coupons/delete/${id}`,
+        config
       );
       return data;
     } catch (error) {
@@ -124,9 +175,38 @@ const couponSlice = createSlice({
       state.coupon = {};
       state.error = action.payload;
     });
+    //Update coupon
+    builder.addCase(updateCouponAction.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(updateCouponAction.fulfilled, (state, action) => {
+      state.loading = false;
+      state.isUpdated = true;
+      state.coupon = action.payload;
+    });
+    builder.addCase(updateCouponAction.rejected, (state, action) => {
+      state.loading = false;
+      state.isUpdated = false;
+      state.coupon = {};
+      state.error = action.payload;
+    });
+    //Delete coupon
+    builder.addCase(deleteCouponAction.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(deleteCouponAction.fulfilled, (state, action) => {
+      state.loading = false;
+      state.isDeleted = true;
+      state.coupon = action.payload;
+    });
+    builder.addCase(deleteCouponAction.rejected, (state, action) => {
+      state.loading = false;
+      state.isDeleted = false;
+      state.coupon = {};
+      state.error = action.payload;
+    });
     //reset
     builder.addCase(resetSuccessAction.pending, (state, action) => {
-      state.loading = false;
       state.isAdded = false;
     });
     builder.addCase(resetErrAction.pending, (state, action) => {

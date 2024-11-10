@@ -4,8 +4,12 @@ import "react-datepicker/dist/react-datepicker.css";
 import LoadingComponent from "../../LoadingComp/LoadingComponent";
 import ErrorMsg from "../../ErrorMsg/ErrorMsg";
 import SuccessMsg from "../../SuccessMsg/SuccessMsg";
+import { useDispatch, useSelector } from "react-redux";
+import { createCouponAction } from "../../../redux/slices/coupons/couponsSlice";
 
 export default function AddCoupon() {
+  //Dispatch
+  const dispatch = useDispatch();
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
 
@@ -21,7 +25,13 @@ export default function AddCoupon() {
   //---onHandleSubmit---
   const onHandleSubmit = (e) => {
     e.preventDefault();
-
+    dispatch(
+      createCouponAction({
+        ...formData,
+        startDate,
+        endDate,
+      })
+    );
     //reset form
     setFormData({
       code: "",
@@ -29,7 +39,7 @@ export default function AddCoupon() {
     });
   };
   //---coupon from store---
-  const { loading, isAdded, error } = {};
+  const { loading, isAdded, error } = useSelector(state => state?.coupons);
   return (
     <>
       {error && <ErrorMsg message={error?.message} />}
@@ -109,7 +119,8 @@ export default function AddCoupon() {
               ) : (
                 <button
                   type="submit"
-                  className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                  className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                >
                   Add Coupon
                 </button>
               )}
