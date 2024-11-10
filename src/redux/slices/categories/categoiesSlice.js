@@ -111,10 +111,9 @@ export const deleteCategoryAction = createAsyncThunk(
       const config = {
         headers: {
           Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
         },
       };
-      const { data } = await axios.get(
+      const { data } = await axios.delete(
         `${baseURL}/categories/delete/${id}`,
         config
       );

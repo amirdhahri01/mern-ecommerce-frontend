@@ -5,7 +5,7 @@ import LoadingComponent from "../../LoadingComp/LoadingComponent";
 import NoDataFound from "../../NoDataFound/NoDataFound";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { fetchCategoriesAction } from "../../../redux/slices/categories/categoiesSlice";
+import { deleteCategoryAction, fetchCategoriesAction } from "../../../redux/slices/categories/categoiesSlice";
 
 export default function ManageCategories() {
   //Dispatch
@@ -19,7 +19,10 @@ export default function ManageCategories() {
   console.log(categories);
   
   //delete category handler
-  const deleteCategoryHandler = (id) => {};
+  const deleteCategoryHandler = (id) => {
+    dispatch(deleteCategoryAction({id}))
+    window.location.reload();
+  };
   return (
     <div className="px-4 sm:px-6 lg:px-8">
       <div className="sm:flex sm:items-center">
