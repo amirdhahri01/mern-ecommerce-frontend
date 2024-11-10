@@ -86,8 +86,6 @@ export default function ProductUpdate() {
   const handleColorChangeOption = (colors) => {
     setColorsOption(colors);
   };
-  console.log(product?.name);
-
   //---form data---
   const [formData, setFormData] = useState({
     name: product?.name,
