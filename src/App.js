@@ -1,4 +1,3 @@
-import React, { useEffect } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import AdminDashboard from "./components/Admin/AdminDashboard";
 import ManageCoupons from "./components/Admin/Coupons/ManageCoupons";
@@ -8,7 +7,6 @@ import AddProduct from "./components/Admin/Products/AddProduct";
 import RegisterForm from "./components/Users/Forms/RegisterForm";
 import HomePage from "./components/HomePage/HomePage";
 import Navbar from "./components/Navbar/Navbar";
-import OrderHistory from "./components/Admin/Orders/ManageOrders";
 import OrderPayment from "./components/Users/Products/OrderPayment";
 import ManageCategories from "./components/Admin/Categories/ManageCategories";
 import ManageStocks from "./components/Admin/Products/ManageStocks";
@@ -158,14 +156,14 @@ const App = () => {
           {/* Orders */}
           <Route path="manage-orders" element={<ManageOrders />} />
           <Route path="orders/:id" element={<UpdateOrders />} />
-          {/* <Route
+          <Route
             path="order-payment"
             element={
               <AdminRoute>
                 <OrderPayment />
               </AdminRoute>
             }
-          /> */}
+          />
           <Route
             path="customers"
             element={

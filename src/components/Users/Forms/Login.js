@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { loginUserAction } from "../../../redux/slices/users/usersSlice";
+import { getUserProfileAction, loginUserAction } from "../../../redux/slices/users/usersSlice";
 import ErrorMsg from "../../ErrorMsg/ErrorMsg";
 import LoadingComponent from "../../LoadingComp/LoadingComponent";
 const Login = () => {
@@ -29,12 +29,8 @@ const Login = () => {
   );
   //redirect
   useEffect(() => {
-    if (userInfo?.userFound) {
-      if (!userInfo?.userFound.isAdmin) {
+    if (userInfo) {
         window.location.href = "/";
-      } else {
-        window.location.href = "/admin";
-      }
     }
   }, [userInfo]);
   return (

@@ -7,12 +7,14 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
-import baseURL from "../../utils/baseURL";
 import logo from "./logo3.png";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCategoriesAction } from "../../redux/slices/categories/categoiesSlice";
 import { getCartItemsFromLocalStorageAction } from "../../redux/slices/Carts/cartsSlice";
-import { logoutAction } from "../../redux/slices/users/usersSlice";
+import {
+  getUserProfileAction,
+  logoutAction,
+} from "../../redux/slices/users/usersSlice";
 import { fetchCouponsAction } from "../../redux/slices/coupons/couponsSlice";
 
 export default function Navbar() {
@@ -21,7 +23,7 @@ export default function Navbar() {
   useEffect(() => {
     dispatch(fetchCategoriesAction());
   }, [dispatch]);
-  //get data from store
+  //Get data from store
   const { categories } = useSelector((state) => state?.categories?.categories);
   const categoriesToDisplay = categories?.slice(0, 3);
 
@@ -31,12 +33,14 @@ export default function Navbar() {
     dispatch(getCartItemsFromLocalStorageAction());
   }, [dispatch]);
   const { cartItems } = useSelector((state) => state?.carts);
-  //get login user from local storage
-  const user = JSON.parse(localStorage.getItem("userInfo"));
-  const isLoggedIn = user?.token ? true : false;
+  //Get login user from local storage
+  const userFound = JSON.parse(localStorage.getItem("userInfo"));
+  const {userFound:user} = userFound;
+  const isLoggedIn = userFound?.token ? true : false;
   //Logout handler
   const logoutHandler = () => {
     dispatch(logoutAction());
+    window.location.reload();
   };
   //Coupons
   useEffect(() => {
@@ -303,6 +307,15 @@ export default function Navbar() {
 
                   {/* login profile icon mobile */}
                   <div className="flex flex-1 items-center justify-end">
+                    {user?.isAdmin && (
+                      <Link
+                        to={"/admin"}
+                        type="button"
+                        className="inline-flex items-center rounded-md border border-r-transparent bg-red-500 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                      >
+                        Admin Dashboard
+                      </Link>
+                    )}
                     <div className="flex items-center lg:ml-8">
                       <div className="flex space-x-8">
                         {isLoggedIn && (
@@ -310,7 +323,7 @@ export default function Navbar() {
                             <div className="flex">
                               <Link
                                 to="/customer-profile"
-                                className="-m-2 p-2 text-gray-400 hover:text-gray-500"
+                                className="-m-2 p-2 mr-2 text-gray-400 hover:text-gray-500"
                               >
                                 <UserIcon
                                   className="h-6 w-6"
