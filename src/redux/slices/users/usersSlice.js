@@ -109,6 +109,14 @@ export const getUserProfileAction = createAsyncThunk(
     }
   }
 );
+//Logout Action
+export const logoutAction = createAsyncThunk(
+  "users/logout-user",
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    localStorage.removeItem("userInfo");
+    return true;
+  }
+);
 //users slice
 const usersSlice = createSlice({
   name: "users",
@@ -161,26 +169,21 @@ const usersSlice = createSlice({
       }
     );
     //get user profile
-    builder.addCase(
-      getUserProfileAction.pending,
-      (state, action) => {
-        state.loading = true;
-      }
-    );
-    builder.addCase(
-      getUserProfileAction.fulfilled,
-      (state, action) => {
-        state.profile = action.payload;
-        state.loading = false;
-      }
-    );
-    builder.addCase(
-      getUserProfileAction.rejected,
-      (state, action) => {
-        state.error = action.payload;
-        state.loading = false;
-      }
-    );
+    builder.addCase(getUserProfileAction.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(getUserProfileAction.fulfilled, (state, action) => {
+      state.profile = action.payload;
+      state.loading = false;
+    });
+    builder.addCase(getUserProfileAction.rejected, (state, action) => {
+      state.error = action.payload;
+      state.loading = false;
+    });
+    //Logout user
+    builder.addCase(logoutAction.fulfilled , (state)=>{
+      state.userAuth.userInfo = {};
+    })
     //reset error action
     builder.addCase(resetErrAction.pending, (state) => {
       state.error = null;

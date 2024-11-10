@@ -12,6 +12,7 @@ import logo from "./logo3.png";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCategoriesAction } from "../../redux/slices/categories/categoiesSlice";
 import { getCartItemsFromLocalStorageAction } from "../../redux/slices/Carts/cartsSlice";
+import { logoutAction } from "../../redux/slices/users/usersSlice";
 
 export default function Navbar() {
   //Dispatch
@@ -34,10 +35,10 @@ export default function Navbar() {
   //get login user from local storage
   const user = JSON.parse(localStorage.getItem("userInfo"));
   const isLoggedIn = user?.token ? true : false;
-  //redirect
-  /*if(!isLoggedIn){
-    window.location.href = "/login";
-  }*/
+  //Logout handler
+  const logoutHandler = () => {
+    dispatch(logoutAction());
+  };
   return (
     <div className="bg-white">
       {/* Mobile menu */}
@@ -291,7 +292,13 @@ export default function Navbar() {
                                   aria-hidden="true"
                                 />
                               </Link>
-                              <button className="h-6 w-6">
+                              {/* Logout */}
+                              <button
+                                className="h-6 w-6"
+                                onClick={(e) => {
+                                  logoutHandler();
+                                }}
+                              >
                                 <svg
                                   xmlns="http://www.w3.org/2000/svg"
                                   fill="none"
