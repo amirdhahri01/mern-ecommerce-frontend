@@ -34,22 +34,12 @@ import ThanksForOrdering from "./components/Users/Products/ThanksForOrdering";
 import ProductUpdate from "./components/Admin/Products/ProductUpdate";
 import UpdateOrders from "./components/Admin/Orders/UpdateOrders";
 import ColorsList from "./components/Admin/Categories/ColorsList";
-import { getUserProfileAction } from "./redux/slices/users/usersSlice";
-import { useDispatch, useSelector } from "react-redux";
 import AuthRoute from "./components/AuthRoute/AuthRoute";
 
 const App = () => {
-  //Dispatch
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(getUserProfileAction());
-  }, [dispatch]);
-  //get user from local storage
-  const { userAuth } = useSelector((state) => state?.users);
-  const isAdmin = userAuth?.userInfo?.userFound?.isAdmin;
   return (
     <BrowserRouter>
-      <Navbar/>
+      <Navbar />
       {/* hide navbar if admin */}
       <Routes>
         {/* nested route */}

@@ -9,7 +9,7 @@ const initialState = {
   loading: false,
   error: null,
   users: [],
-  user: {},
+  user: null,
   profile: {},
   userAuth: {
     loading: false,
