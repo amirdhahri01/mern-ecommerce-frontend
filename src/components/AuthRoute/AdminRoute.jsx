@@ -10,8 +10,9 @@ const AdminRoute = ({ children }) => {
   }, [dispatch]);
   //get user from local storage
   const { userAuth } = useSelector((state) => state?.users);
-  const isAdmin = userAuth?.userFound?.isAdmin;
-  if (!isAdmin) return <Login />;
+  console.log("user" , userAuth);
+  const isAdmin = userAuth?.userInfo?.userFound?.isAdmin;
+  if (!isAdmin) return <Login/>;
   return <>{children}</>;
 };
 

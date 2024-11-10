@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchCategoriesAction } from "../../redux/slices/categories/categoiesSlice";
 import { getCartItemsFromLocalStorageAction } from "../../redux/slices/Carts/cartsSlice";
 import { logoutAction } from "../../redux/slices/users/usersSlice";
+import { fetchCouponsAction } from "../../redux/slices/coupons/couponsSlice";
 
 export default function Navbar() {
   //Dispatch
@@ -30,8 +31,6 @@ export default function Navbar() {
     dispatch(getCartItemsFromLocalStorageAction());
   }, [dispatch]);
   const { cartItems } = useSelector((state) => state?.carts);
-  //get cart items from local storage
-  let cartItemsFromLocalStorage;
   //get login user from local storage
   const user = JSON.parse(localStorage.getItem("userInfo"));
   const isLoggedIn = user?.token ? true : false;
@@ -39,6 +38,14 @@ export default function Navbar() {
   const logoutHandler = () => {
     dispatch(logoutAction());
   };
+  //Coupons
+  useEffect(() => {
+    dispatch(fetchCouponsAction());
+  }, [dispatch]);
+  //Get coupons
+  const { coupons, loading, error } = useSelector((state) => state.coupons);
+  //Get current coupon
+  const currentCoupon = coupons?.coupons?.[coupons?.coupons?.length - 1];
   return (
     <div className="bg-white">
       {/* Mobile menu */}
@@ -165,10 +172,12 @@ export default function Navbar() {
       <header className="relative z-10">
         <nav aria-label="Top">
           {/* Top navigation  desktop*/}
-          <div className="bg-gray-900">
+          <div className="bg-yellow-500">
             <div className="mx-auto flex h-10 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
               <p className="flex-1 text-center text-sm font-medium text-white lg:flex-none">
-                Get free delivery on orders over $100
+                {currentCoupon
+                  ? `${currentCoupon.code} ${currentCoupon.discount}%`
+                  : "No flash sale at moment"}
               </p>
 
               <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
