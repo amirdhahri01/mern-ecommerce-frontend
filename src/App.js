@@ -49,7 +49,6 @@ const App = () => {
   const isAdmin = userAuth?.userInfo?.userFound?.isAdmin;
   return (
     <BrowserRouter>
-      {!isAdmin && <Navbar />}
       <Navbar/>
       {/* hide navbar if admin */}
       <Routes>

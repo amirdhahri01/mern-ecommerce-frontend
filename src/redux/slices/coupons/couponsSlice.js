@@ -151,12 +151,10 @@ const couponSlice = createSlice({
     });
     builder.addCase(fetchCouponsAction.fulfilled, (state, action) => {
       state.loading = false;
-      state.isAdded = true;
       state.coupons = action.payload;
     });
     builder.addCase(fetchCouponsAction.rejected, (state, action) => {
       state.loading = false;
-      state.isAdded = false;
       state.coupons = [];
       state.error = action.payload;
     });
@@ -166,12 +164,10 @@ const couponSlice = createSlice({
     });
     builder.addCase(fetchCouponAction.fulfilled, (state, action) => {
       state.loading = false;
-      state.isAdded = true;
       state.coupon = action.payload;
     });
     builder.addCase(fetchCouponAction.rejected, (state, action) => {
       state.loading = false;
-      state.isAdded = false;
       state.coupon = {};
       state.error = action.payload;
     });

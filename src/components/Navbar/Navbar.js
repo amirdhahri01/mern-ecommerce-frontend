@@ -171,36 +171,52 @@ export default function Navbar() {
 
       <header className="relative z-10">
         <nav aria-label="Top">
-          {/* Top navigation  desktop*/}
-          <div className="bg-yellow-500">
-            <div className="mx-auto flex h-10 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-              <p className="flex-1 text-center text-sm font-medium text-white lg:flex-none">
-                {currentCoupon
-                  ? `${currentCoupon.code} ${currentCoupon.discount}%`
-                  : "No flash sale at moment"}
-              </p>
+          {/* Coupon navbar */}
+          {!currentCoupon?.isExpired && (
+            <div className="bg-yellow-600">
+              <div className="mx-auto flex h-10 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+                <p
+                  style={{ textAlign: "center", width: "100%" }}
+                  className="flex-1 text-center text-sm font-medium text-white lg:flex-none"
+                >
+                  {currentCoupon
+                    ? `${currentCoupon.code} ${currentCoupon.discount}% ,${currentCoupon.daysLeft}`
+                    : "No flash sale at moment"}
+                </p>
 
-              <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-                {!isLoggedIn && (
-                  <>
-                    <Link
-                      to="/register"
-                      className="text-sm font-medium text-white hover:text-gray-100"
-                    >
-                      Create an account
-                    </Link>
-                    <span className="h-6 w-px bg-gray-600" aria-hidden="true" />
-                    <Link
-                      to="/login"
-                      className="text-sm font-medium text-white hover:text-gray-100"
-                    >
-                      Sign in
-                    </Link>
-                  </>
-                )}
+                <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6"></div>
               </div>
             </div>
-          </div>
+          )}
+          {/* Top navigation  desktop*/}
+          {!isLoggedIn && (
+            <div className="bg-gray-800">
+              <div className="mx-auto flex h-10 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+                <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
+                  {!isLoggedIn && (
+                    <>
+                      <Link
+                        to="/register"
+                        className="text-sm font-medium text-white hover:text-gray-100"
+                      >
+                        Create an account
+                      </Link>
+                      <span
+                        className="h-6 w-px bg-gray-600"
+                        aria-hidden="true"
+                      />
+                      <Link
+                        to="/login"
+                        className="text-sm font-medium text-white hover:text-gray-100"
+                      >
+                        Sign in
+                      </Link>
+                    </>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Deskto Navigation */}
           <div className="bg-white">
