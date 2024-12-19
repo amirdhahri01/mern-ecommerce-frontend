@@ -12,8 +12,6 @@ const AdminRoute = ({ children }) => {
   const { userAuth } = useSelector((state) => state?.users);
   const isAdmin = userAuth?.userInfo?.userFound?.isAdmin;
   if (!isAdmin) return <Login/>;
-  console.log("good");
-  
   return <>{children}</>;
 };
 

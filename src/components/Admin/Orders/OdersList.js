@@ -7,15 +7,15 @@ import LoadingComponent from "../../LoadingComp/LoadingComponent";
 import NoDataFound from "../../NoDataFound/NoDataFound";
 import { Link } from "react-router-dom";
 
-const people = [
-  {
-    name: "Lindsay Walton",
-    title: "Front-end Developer",
-    email: "lindsay.walton@example.com",
-    role: "Member",
-  },
-  // More people...
-];
+// const people = [
+//   {
+//     name: "Lindsay Walton",
+//     title: "Front-end Developer",
+//     email: "lindsay.walton@example.com",
+//     role: "Member",
+//   },
+//   // More people...
+// ];
 
 export default function OrdersList() {
   //Dispatch
