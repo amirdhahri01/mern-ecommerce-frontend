@@ -130,12 +130,12 @@ export default function OrdersList() {
                 </tr>
               ))}
             </tbody>
-            {loading ? (
-              <LoadingComponent />
-            ) : (
-              orders.length <= 0 && <NoDataFound />
-            )}
           </table>
+          {loading ? (
+            <LoadingComponent />
+          ) : (
+            orders.length <= 0 && <NoDataFound />
+          )}
         </div>
       </div>
     </>

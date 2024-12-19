@@ -11,8 +11,8 @@ const AdminRoute = ({ children }) => {
   //get user from local storage
   const { userAuth } = useSelector((state) => state?.users);
   const isAdmin = userAuth?.userInfo?.userFound?.isAdmin;
-  if (!isAdmin) return <Login/>;
-  return <>{children}</>;
+  if (isAdmin) return <>{children}</>;
+  return <Login />;
 };
 
 export default AdminRoute;
