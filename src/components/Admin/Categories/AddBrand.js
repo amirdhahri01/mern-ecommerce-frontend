@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
 import { Link } from "react-router-dom";
 import { createBrandAction } from "../../../redux/slices/brands/brandsSlice";
 import SuccessMsg from "../../SuccessMsg/SuccessMsg";
@@ -25,7 +24,7 @@ export default function AddBrand() {
     setFormData({ name: "" });
   };
   //Get data from store
-  const { brand, error, loading, isAdded } = useSelector(
+  const {error, loading, isAdded } = useSelector(
     (state) => state?.brands
   );
   return (

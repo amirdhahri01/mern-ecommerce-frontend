@@ -30,7 +30,6 @@ const AddShippingAddress = () => {
   const onChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-
   //onsubmit
   const onSubmit = (e) => {
     e.preventDefault();

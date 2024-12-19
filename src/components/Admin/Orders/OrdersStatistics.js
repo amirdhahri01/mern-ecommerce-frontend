@@ -1,16 +1,18 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchOrdersStatisticsAction } from "../../../redux/slices/orders/ordersSlice";
+import LoadingComponent from "../../LoadingComp/LoadingComponent";
+import ErrorMsg from "../../ErrorMsg/ErrorMsg";
 
 export default function OrdersStats() {
   //Dispatch
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchOrdersStatisticsAction());
-  }, []);
+  }, [dispatch]);
   //Get data from store
   const { stats, loading, error } = useSelector((state) => state?.orders);
-  const statistics = stats.statistics
+  const statistics = stats?.statistics
     ? Object.values(stats?.statistics[0])
     : [];
   return (

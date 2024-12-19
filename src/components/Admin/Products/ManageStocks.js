@@ -13,7 +13,7 @@ export default function ManageStocks() {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchProductsAction({url:productUrl}));
-  }, [dispatch]);
+  }, [dispatch ,productUrl]);
   //Selector
   const { loading, error, products } = useSelector((state) => state?.products);
   //delete product handler

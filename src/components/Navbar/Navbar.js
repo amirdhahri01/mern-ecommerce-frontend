@@ -35,7 +35,7 @@ export default function Navbar() {
   const { cartItems } = useSelector((state) => state?.carts);
   //Get login user from local storage
   const userFound = JSON.parse(localStorage.getItem("userInfo"));
-  const {userFound:user} = userFound;
+  const user = userFound?.user;
   const isLoggedIn = userFound?.token ? true : false;
   //Logout handler
   const logoutHandler = () => {

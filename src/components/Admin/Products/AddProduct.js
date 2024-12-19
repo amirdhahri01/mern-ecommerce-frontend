@@ -91,7 +91,7 @@ export default function AddProduct() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
   //Get product from store
-  const { product, isAdded, loading, error } = useSelector(
+  const {isAdded, loading, error } = useSelector(
     (state) => state?.products
   );
   //onSubmit
