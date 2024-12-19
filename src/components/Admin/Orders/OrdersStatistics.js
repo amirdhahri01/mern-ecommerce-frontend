@@ -11,10 +11,8 @@ export default function OrdersStats() {
     dispatch(fetchOrdersStatisticsAction());
   }, [dispatch]);
   //Get data from store
-  const { stats, loading, error } = useSelector((state) => state?.orders);
-  const statistics = stats?.statistics
-    ? Object.values(stats?.statistics[0])
-    : [];
+  const { stats } = useSelector((state) => state?.orders);
+  const statistics = stats?.statistics !== undefined ? Object.values(stats?.statistics[0]) : [];
   return (
     <div>
       <dl className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">

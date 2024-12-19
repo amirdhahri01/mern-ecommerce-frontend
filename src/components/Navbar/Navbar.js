@@ -12,7 +12,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchCategoriesAction } from "../../redux/slices/categories/categoiesSlice";
 import { getCartItemsFromLocalStorageAction } from "../../redux/slices/Carts/cartsSlice";
 import {
-  getUserProfileAction,
   logoutAction,
 } from "../../redux/slices/users/usersSlice";
 import { fetchCouponsAction } from "../../redux/slices/coupons/couponsSlice";
@@ -47,7 +46,7 @@ export default function Navbar() {
     dispatch(fetchCouponsAction());
   }, [dispatch]);
   //Get coupons
-  const { coupons, loading, error } = useSelector((state) => state.coupons);
+  const { coupons } = useSelector((state) => state.coupons);
   //Get current coupon
   const currentCoupon = coupons?.coupons?.[coupons?.coupons?.length - 1];
   return (
