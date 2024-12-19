@@ -128,15 +128,13 @@ export default function Navbar() {
                   ) : (
                     categoriesToDisplay?.map((category) => {
                       return (
-                        <>
-                          <Link
-                            key={category?._id}
-                            to={`/products-filters?category=${category?.name}`}
-                            className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800"
-                          >
-                            {category?.name}
-                          </Link>
-                        </>
+                        <Link
+                          key={category?._id}
+                          to={`/products-filters?category=${category?.name}`}
+                          className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800"
+                        >
+                          {category?.name}
+                        </Link>
                       );
                     })
                   )}
@@ -268,15 +266,13 @@ export default function Navbar() {
                         ) : (
                           categoriesToDisplay?.map((category) => {
                             return (
-                              <>
-                                <Link
-                                  key={category?._id}
-                                  to={`/products-filters?category=${category?.name}`}
-                                  className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800"
-                                >
-                                  {category?.name}
-                                </Link>
-                              </>
+                              <Link
+                                key={category?._id}
+                                to={`/products-filters?category=${category?.name}`}
+                                className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800"
+                              >
+                                {category?.name}
+                              </Link>
                             );
                           })
                         )}
