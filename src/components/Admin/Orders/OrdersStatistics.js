@@ -12,6 +12,8 @@ export default function OrdersStats() {
   }, [dispatch]);
   //Get data from store
   const { stats } = useSelector((state) => state?.orders);
+  console.log(stats);
+  
   const statistics = stats && stats?.statistics && stats?.statistics[0] ? Object.values(stats?.statistics[0]) : [];
   return (
     <div>
