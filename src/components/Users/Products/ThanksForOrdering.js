@@ -15,7 +15,7 @@ const products = [
   // More products...
 ];
 
-export default function ThanksForOrdering() {
+const  ThanksForOrdering = () =>  {
   return (
     <>
       <main className="relative lg:min-h-full">
@@ -56,3 +56,5 @@ export default function ThanksForOrdering() {
     </>
   );
 }
+
+export default ThanksForOrdering
